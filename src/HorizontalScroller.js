@@ -14,23 +14,16 @@ var HorizontalScroller = React.createClass ({
     target: 0,
 
     render: function() {
-        return React.Children.only(this.props.children);
-    },
-
-    componentDidMount: function(){
-        this.setupEvents();
-    },
-
-    setupEvents: function () {
-        var view = React.findDOMNode(this);
-        if (typeof window.ontouchstart !== 'undefined') {
-            view.addEventListener('touchstart', this.tap.bind(this));
-            view.addEventListener('touchmove', this.drag.bind(this));
-            view.addEventListener('touchend', this.release.bind(this));
-        }
-        view.addEventListener('mousedown', this.tap.bind(this));
-        view.addEventListener('mousemove', this.drag.bind(this));
-        view.addEventListener('mouseup', this.release.bind(this));
+        //return React.Children.only(this.props.children);
+        return <div
+                    onTouchStart={this.tap}
+                    onTouchMove={this.drag}
+                    onTouchEnd={this.release}
+                    onMouseDown={this.tap}
+                    onMouseMove={this.drag}
+                    onMouseUp={this.release}
+                    style={{height: '100%', width: '100%'}}>{React.Children.only(this.props.children)}
+            </div>;
     },
 
     xpos: function(e) {

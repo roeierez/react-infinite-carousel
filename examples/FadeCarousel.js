@@ -10,6 +10,7 @@ var images = [
 var content = document.getElementById('content'),
     itemRenderer = function (index, progress) {
         var opacity = progress < 0.5 ? progress * 2 : (1 - progress) * 2;
+        opacity -= (1 - opacity) * 2;
         return <div style={{height: '50%'}}>
             <div style={{
                 height: '100%',
@@ -17,7 +18,13 @@ var content = document.getElementById('content'),
                 color: 'white'
             }}>
             </div>
-            <div style={{opacity: opacity, color: 'white', marginTop: '20px'}}>{"Document " + index.toString()}</div>
+            <div style={{
+                opacity: opacity,
+                fontSize: '30px',
+                color: 'white',
+                textAlign: 'center',
+                marginTop: '20px'
+            }}>{"Document " + index.toString()}</div>
         </div>;
     },
 
@@ -26,10 +33,7 @@ var content = document.getElementById('content'),
     }
 
 React.render(<Carousel
-    spacing={50}
     backgroundRenderer={backgroundRenderer}
     itemRenderer={itemRenderer}
-    itemWidth={screen.width / 3 + 20}
-    containerWidth={screen.width}
 />, content);
 
