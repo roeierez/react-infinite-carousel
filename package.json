@@ -1,0 +1,15 @@
+{
+  "name": "react-infinite-carousel",
+  "version": "0.0.1",
+  "description": "inifinite carousel implemented with React",
+  "repository": "",
+  "src": "src",
+  "dist": "dist",
+  "dependencies": {
+    "react": "~0.13.1"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.13.2",
+    "webpack": "~1.4.3"
+  }
+}
