@@ -1,0 +1,28 @@
+{
+  "name": "react-infinite-carousel",
+  "version": "0.0.1",
+  "homepage": "https://github.com/roeierez/react-infinite-carousel",
+  "authors": [
+    "<Roei Erez <roeierez@gmail.com>>"
+  ],
+  "description": "Infinite carousel component implemented with React",
+  "main": "Carousel.js",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "keywords": [
+    "carousel",
+    "react",
+    "react-component",
+    "infinite"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
