@@ -10,9 +10,10 @@ var images = [
 var content = document.getElementById('content'),
     itemRenderer = function (index, progress) {
         var opacity = progress < 0.5 ? progress * 2 : (1 - progress) * 2;
-        opacity -= (1 - opacity) * 2;
+        //opacity -= (1 - opacity) * 2;
         return <div style={{height: '50%'}}>
             <div style={{
+                opacity: opacity,
                 height: '100%',
                 border: 'solid 2px white',
                 color: 'white'
@@ -29,7 +30,7 @@ var content = document.getElementById('content'),
     },
 
     backgroundRenderer = function (index) {
-        return <img style={{width: '100%', height: '100%'}} src={images[index % 3]} />;
+        return <img style={{filter: 'brightness(30%)', WebkitFilter: 'brightness(40%)', width: '100%', height: '100%'}} src={images[index % 3]} />;
     }
 
 React.render(<Carousel

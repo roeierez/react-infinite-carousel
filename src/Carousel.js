@@ -15,11 +15,21 @@ var carousel = React.createClass({
 
     componentDidMount: function(){
         this.containerWidth = React.findDOMNode(this).clientWidth;
+        window.addEventListener('resize', this.onResize.bind(this));
+        this.forceUpdate();
+    },
+
+    componentWillUnmount: function(){
+        window.removeEventListener('resize', this.onResize.bind(this));
+    },
+
+    onResize: function(){
+        this.containerWidth = React.findDOMNode(this).clientWidth;
         this.forceUpdate();
     },
 
     getItemWidth: function(){
-        return this.props.itemWidth || this.containerWidth / 3;
+        return this.props.itemWidth || this.containerWidth / 2;
     },
 
     getItemsPerSide: function(){
@@ -27,7 +37,7 @@ var carousel = React.createClass({
     },
 
     getItemsSpacing: function(){
-        return this.props.spacing || this.getItemWidth() / 2;
+        return this.props.spacing || this.getItemWidth() / 6;
     },
 
     onScroll: function (offset) {
