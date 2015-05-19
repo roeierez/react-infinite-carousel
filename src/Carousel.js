@@ -36,14 +36,19 @@ var carousel = React.createClass({
         return this.props.numberOfRenderItemsPerSide || DEFAULT_ITEMS_TO_RENDER_COUNT;
     },
 
+    getScrollerSize: function(){
+        return (this.props.itemsCount - 1) * (this.getItemWidth() + this.getItemsSpacing());
+    },
+
     getItemsSpacing: function(){
         return this.props.spacing || this.getItemWidth() / 6;
     },
 
     onScroll: function (offset) {
+        console.error('offset = ' + offset + ' maxsize=' + this.getScrollerSize());
         var itemsSpacing = this.getItemsSpacing(),
             distanceBetweenItems = this.getItemWidth() + itemsSpacing,
-            centeredItem = this.getCenterLeavingItem(offset, distanceBetweenItems),
+            centeredItem = Math.max(0, Math.min(this.props.itemsCount - 1,  this.getCenterLeavingItem(offset, distanceBetweenItems) )),
             containerStartOffset = centeredItem * distanceBetweenItems - this.containerWidth / 2 - this.getItemWidth() / 2,
             relativeProgress = (offset - containerStartOffset) / (this.containerWidth + this.getItemWidth());
 
@@ -113,23 +118,29 @@ var carousel = React.createClass({
             itemsToRender = [this.renderCarouselItem(this.state.centeredItemIndex, centerItemTranslateX)];
 
         for (var i = 1; i <= this.getItemsPerSide(); ++i) {
-            itemsToRender.unshift(this.renderCarouselItem(this.state.centeredItemIndex - i, centerItemTranslateX - i * itemsSpacing - i * itemWidth));
+            if (this.state.centeredItemIndex - i >= 0) {
+                itemsToRender.unshift(this.renderCarouselItem(this.state.centeredItemIndex - i, centerItemTranslateX - i * itemsSpacing - i * itemWidth));
+            }
+
+            if (this.state.centeredItemIndex + i < this.props.itemsCount)
             itemsToRender.push(this.renderCarouselItem(this.state.centeredItemIndex + i, centerItemTranslateX + i * itemsSpacing + i * itemWidth));
         }
 
         var scrolledOutItemBackground = this.renderBackgroundItem(this.state.centeredItemIndex, centerItemTranslateX, 1),
-            scrolledInItemBackground = null,
+            scrolledInItemBackground = scrolledOutItemBackground,
             scrollingRight = this.state.centerItemProgress > 0.5;
 
         if (scrollingRight) {
-            scrolledInItemBackground = this.renderBackgroundItem(this.state.centeredItemIndex + 1, centerItemTranslateX + itemsSpacing + itemWidth);
-        } else {
+            if (this.state.centeredItemIndex < this.props.itemsCount - 1) {
+                scrolledInItemBackground = this.renderBackgroundItem(this.state.centeredItemIndex + 1, centerItemTranslateX + itemsSpacing + itemWidth);
+            }
+        } else if (this.state.centeredItemIndex > 0 ) {
             scrolledInItemBackground = this.renderBackgroundItem(this.state.centeredItemIndex - 1, centerItemTranslateX - itemsSpacing - itemWidth);
         }
 
 
         return (
-            <HorizontalScroller snap={itemWidth + itemsSpacing} onScroll={this.onScroll}>
+            <HorizontalScroller size={this.getScrollerSize()} snap={itemWidth + itemsSpacing} onScroll={this.onScroll}>
                 <div onResize style={{width: containerWidth, height: '100%', overflow: 'hidden', position: 'relative'}}>
                     {scrolledOutItemBackground}
                     {scrolledInItemBackground}
@@ -146,7 +157,8 @@ carousel.propTypes = {
     itemWidth: React.PropTypes.number,
     containerWidth: React.PropTypes.number,
     spacing: React.PropTypes.number,
-    numberOfRenderItemsPerSide: React.PropTypes.number
+    numberOfRenderItemsPerSide: React.PropTypes.number,
+    itemsCount: React.PropTypes.number
 };
 
 module.exports = carousel;

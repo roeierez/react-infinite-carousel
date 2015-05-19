@@ -25,7 +25,7 @@ var content = document.getElementById('content'),
                 color: 'white',
                 textAlign: 'center',
                 marginTop: '20px'
-            }}>{"Document " + index.toString()}</div>
+            }}>{"Document " + (index + 1).toString()}</div>
         </div>;
     },
 
@@ -36,5 +36,6 @@ var content = document.getElementById('content'),
 React.render(<Carousel
     backgroundRenderer={backgroundRenderer}
     itemRenderer={itemRenderer}
+    itemsCount={10}
 />, content);
 

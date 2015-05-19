@@ -109,12 +109,15 @@ var HorizontalScroller = React.createClass ({
             this.amplitude = 1.2 * this.velocity;
             this.target = this.offset + this.amplitude;
         }
-        this.target = Math.round(this.target / snap) * snap;
 
         if (Math.floor(this.offset / snap) * snap < this.target) {
             this.target = Math.floor(this.offset / snap) * snap + snap;
         } else if (Math.ceil(this.offset / snap) * snap > this.target) {
             this.target = Math.ceil(this.offset / snap) * snap - snap;
+        }
+
+        if (typeof this.props.size == 'number') {
+            this.target = Math.max(0, Math.min(this.props.size, Math.round(this.target / snap) * snap));
         }
 
         this.amplitude = this.target - this.offset;
@@ -129,7 +132,8 @@ var HorizontalScroller = React.createClass ({
 
 HorizontalScroller.propTypes = {
     onScroll: React.PropTypes.func,
-    snap: React.PropTypes.number
+    snap: React.PropTypes.number,
+    size: React.PropTypes.number
 }
 
 module.exports = HorizontalScroller;
