@@ -1,14 +1,34 @@
 # react-infinite-carousel
-Infinite carousel with progress control build with React.
+Infinite carousel with progress control built with React.
+
+The user has the ability to control the items rendering and background rendering at any stage.
+The component gets "itemRenderer" function that gets index and progress as input and should return a React component.
+The progress is a number between 0 to 1 which reflects the position of the item on the screen.
+This enables the user to render according to position on screen, for example change opacity brightness scaling...
 
 ## Quick Start
+```
+var content = document.getElementById('content'),
+    backgroundRenderer = function(index){
+      return <img src={"backgroundImage.jpg"} />
+    },
+    itemRenderer = function(index, progress){
+      return <div>{"Item number " + index} </div>
+    };
+    
+React.render(<Carousel
+    backgroundRenderer={backgroundRenderer}
+    itemRenderer={itemRenderer}
+    itemsCount={10}
+/>, content);
 
+```
 ## Installation
-react-infinite-carousel uses a Universal Module Definition do you can use it with both CommonJS and RequireJS.
+react-infinite-carousel uses a Universal Module Definition so you can use it with both CommonJS and RequireJS.
 
 ### CommonJS
 ```
-require('reaqct-infinite-carousel')
+require('react-infinite-carousel')
 ```
 
 ### RequireJS
