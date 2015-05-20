@@ -1,8 +1,11 @@
 
 module.exports = {
     applyTranslateStyle: function(currentStyle, x, y, z){
-        currentStyle['Transform'] = 'translate3d(' + x + 'px,' + y + 'px,' + z + 'px)';
-        currentStyle['WebkitTransform'] = 'translate3d(' + x + 'px,' + y + 'px,' + z + 'px)';
+        var styleValue = 'translate3d(' + x.toString() + 'px,' + y + 'px,' + z + 'px)';
+        currentStyle['Transform'] = styleValue;
+        currentStyle['WebkitTransform'] = styleValue;
+        currentStyle['MsTransform'] = styleValue;
+        currentStyle['MozTransform'] = styleValue;
         return currentStyle;
     }
 }

@@ -29,7 +29,7 @@ var carousel = React.createClass({
     },
 
     getItemWidth: function(){
-        return this.props.itemWidth || this.containerWidth / 2;
+        return this.props.itemWidth || this.containerWidth / 2 || 0;
     },
 
     getItemsPerSide: function(){
@@ -41,7 +41,7 @@ var carousel = React.createClass({
     },
 
     getItemsSpacing: function(){
-        return this.props.spacing || this.getItemWidth() / 6;
+        return this.props.spacing || this.getItemWidth() / 6 || 0;
     },
 
     onScroll: function (offset) {
@@ -114,7 +114,7 @@ var carousel = React.createClass({
             containerWidth = this.containerWidth,
             itemsSpacing = this.getItemsSpacing(),
 
-            centerItemTranslateX = this.containerWidth - (this.state.centerItemProgress * (this.containerWidth + itemWidth)),
+            centerItemTranslateX = (this.containerWidth - (this.state.centerItemProgress * (this.containerWidth + itemWidth))) || 0,
             itemsToRender = [this.renderCarouselItem(this.state.centeredItemIndex, centerItemTranslateX)];
 
         for (var i = 1; i <= this.getItemsPerSide(); ++i) {

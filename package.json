@@ -6,10 +6,10 @@
   "src": "src",
   "dist": "dist",
   "dependencies": {
-    "react": "~0.13.1"
+    "react": "~0.13.3"
   },
   "devDependencies": {
-    "jsx-loader": "^0.13.2",
+    "jsx-loader": "^0.13.3",
     "webpack": "~1.4.3"
   }
 }
