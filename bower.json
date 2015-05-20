@@ -6,7 +6,7 @@
     "<Roei Erez <roeierez@gmail.com>>"
   ],
   "description": "Infinite carousel component implemented with React",
-  "main": "Carousel.js",
+  "main": "src/Carousel.js",
   "moduleType": [
     "amd",
     "node"

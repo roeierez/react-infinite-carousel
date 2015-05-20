@@ -93,17 +93,18 @@ var carousel = React.createClass({
             itemsSpacing = this.getItemsSpacing(),
             containerWidth = this.containerWidth,
             distanceFromCenter1 = Math.abs(translateX - containerWidth / 2 + itemWidth / 2),
-            opacity = givenOpacity ? givenOpacity : 1 - distanceFromCenter1 / (itemWidth / 2 + itemsSpacing);
-
-        return (
-            <div key={"background" + index} style={{
+            opacity = givenOpacity ? givenOpacity : 1 - distanceFromCenter1 / (itemWidth / 2 + itemsSpacing),
+            backgroundStyle = StyleHelper.applyTranslateStyle({
                 opacity: opacity,
                 width: containerWidth,
                 height: '100%',
                 position: 'absolute',
                 top: '0px',
                 left: '0px'
-            }}>
+            }, 0,0,0);
+
+        return (
+            <div key={"background" + index} style={backgroundStyle}>
                 {this.props.backgroundRenderer(index)}
             </div>
         );
