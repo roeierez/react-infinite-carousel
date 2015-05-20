@@ -10,7 +10,7 @@ This enables the user to render according to position on screen, for example cha
 ```
 var content = document.getElementById('content'),
     backgroundRenderer = function(index){
-      return <img src={"backgroundImage.jpg"} />
+      return <img src={"backgroundImage.jpg"} width: '100%', height: '100%'/>
     },
     itemRenderer = function(index, progress){
       return <div>{"Item number " + index} </div>
