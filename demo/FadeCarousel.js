@@ -23,7 +23,7 @@ var content = document.getElementById('content'),
                 border: 'solid 2px white',
                 color: 'white'
             }}>
-                <img src={contentImages[index % 5].url} width='100%' height='100%'/>
+
             </div>
             <div style={{
                 opacity: opacity,
