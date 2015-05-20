@@ -36,7 +36,8 @@ var content = document.getElementById('content'),
     },
 
     backgroundRenderer = function (index) {
-        return React.createElement("img", {style: {filter: 'brightness(30%)', WebkitFilter: 'brightness(40%)', width: '100%', height: '100%'}, src: images[index % 3]});
+        return React.createElement("div", null);
+        //return <img style={{filter: 'brightness(30%)', WebkitFilter: 'brightness(40%)', width: '100%', height: '100%'}} src={images[index % 3]} />;
     }
 
 React.render(React.createElement(Carousel, {
