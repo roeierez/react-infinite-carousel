@@ -9,7 +9,7 @@
     "react": "~0.13.3"
   },
   "devDependencies": {
-    "jsx-loader": "^0.13.3",
+    "jsx-loader": "^0.13.2",
     "webpack": "~1.4.3"
   }
 }

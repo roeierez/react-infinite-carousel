@@ -12,10 +12,12 @@ module.exports = {
 
   output: {
     path: 'dist/',
-    filename: 'Carousel.js'
+    filename: 'Carousel.js',
+    library: "Carousel",
+    libraryTarget: "umd"
   },
 
-  debug: false,
+  debug: true,
   devtool: false,
   entry: './src/Carousel.js',
 
@@ -23,6 +25,17 @@ module.exports = {
     colors: true,
     reasons: false
   },
+
+  externals: [
+    {
+      "react": {
+        root: "React",
+        commonjs2: "react",
+        commonjs: "react",
+        amd: "react"
+      }
+    }
+  ],
 
   plugins: [
     new webpack.optimize.DedupePlugin(),
