@@ -17,10 +17,10 @@ var content = document.getElementById('content'),
     };
     
 React.render(<Carousel
-    backgroundRenderer={backgroundRenderer}
-    itemRenderer={itemRenderer}
-    itemsCount={10}
-/>, content);
+                backgroundRenderer={backgroundRenderer}
+                itemRenderer={itemRenderer}
+                itemsCount={10}
+            />, content);
 
 ```
 ## Installation
