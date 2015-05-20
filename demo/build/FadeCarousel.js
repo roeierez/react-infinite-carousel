@@ -5,11 +5,11 @@ var images = [
         "https://c1.staticflickr.com/9/8693/16703132590_e6b1ab0793.jpg"
     ],
     contentImages = [
-        {url: 'https://c2.staticflickr.com/6/5455/17859625915_9afaa75f20_h.jpg', text: 'Misty Sunset'},
-        {url: 'https://c2.staticflickr.com/6/5322/17870358831_112d634d03_h.jpg', text: 'For the souls of the sea'},
-        {url: 'https://c2.staticflickr.com/6/5469/17244068574_926d50213c_h.jpg', text: 'Golden Pyramid'},
-        {url: 'https://c1.staticflickr.com/9/8798/17870330381_050cdf7836_b.jpg', text: 'The quiet beginning of a new day'},
-        {url: 'https://c2.staticflickr.com/8/7785/17859738545_de14da942c_h.jpg', text:'the woods are alive...'}
+        {url: 'https://c2.staticflickr.com/6/5455/17859625915_b895f4deca_n.jpg', text: 'Misty Sunset'},
+        {url: 'https:////c2.staticflickr.com/6/5322/17870358831_e545d32cee_n.jpg', text: 'For the souls of the sea'},
+        {url: 'https://c2.staticflickr.com/6/5469/17244068574_b855e5001d_n.jpg', text: 'Golden Pyramid'},
+        {url: 'https://c1.staticflickr.com/9/8798/17870330381_050cdf7836_n.jpg', text: 'The quiet beginning of a new day'},
+        {url: 'https://c2.staticflickr.com/8/7785/17859738545_4b31628f12_n.jpg', text:'the woods are alive...'}
     ];
 
 var content = document.getElementById('content'),
