@@ -5,7 +5,7 @@ Infinite carousel with progress control build with React.
 
 ## Installation
 react-infinite-carousel uses a Universal Module Definition do you can use it with both CommonJS and RequireJS.
-```
+
 ### CommonJS
 ```
 require('reaqct-infinite-carousel')
