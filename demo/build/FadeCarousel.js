@@ -22,8 +22,8 @@ var content = document.getElementById('content'),
                 height: '100%',
                 border: 'solid 2px white',
                 color: 'white'
-            }}
-
+            }}, 
+                React.createElement("img", {src: contentImages[index % 5].url, width: "100%", height: "100%"})
             ), 
             React.createElement("div", {style: {
                 opacity: opacity,
