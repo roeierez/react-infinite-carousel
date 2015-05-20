@@ -1,6 +1,8 @@
 # react-infinite-carousel
 Infinite carousel with progress control built with React.
 
+<p>See <a href="http://roeierez.github.io/react-infinite-carousel/demo/" target="_blank">Live demo</a></p>
+
 The user has the ability to control the items rendering and background rendering at any stage.
 The component gets "itemRenderer" function that gets index and progress as input and should return a React component.
 The progress is a number between 0 to 1 which reflects the position of the item on the screen.
