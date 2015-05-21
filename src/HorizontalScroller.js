@@ -1,5 +1,5 @@
 var React = require('react'),
-    SCROLLING_TIME_CONSTANT = 325;
+    SCROLLING_TIME_CONSTANT = 70;
 
 var HorizontalScroller = React.createClass ({
 
@@ -59,7 +59,7 @@ var HorizontalScroller = React.createClass ({
 
         if (this.amplitude) {
             elapsed = Date.now() - this.timestamp;
-                delta = this.amplitude * Math.exp(-elapsed / SCROLLING_TIME_CONSTANT);
+            delta = this.amplitude * Math.exp(-elapsed / SCROLLING_TIME_CONSTANT);
             if (delta > 10 || delta < -10) {
                 this.scroll(this.target - delta);
                 requestAnimationFrame(this.autoScroll.bind(this));

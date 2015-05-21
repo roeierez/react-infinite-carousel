@@ -59,10 +59,16 @@ var carousel = React.createClass({
     },
 
     getCenterLeavingItem: function (offset, distanceBetweenItems) {
-        var centerLeavingItem = Math.round(offset / distanceBetweenItems);
-        if (offset % distanceBetweenItems > 0 && Math.abs(centerLeavingItem - this.state.centeredItemIndex) <= 1) {
-            centerLeavingItem = this.state.centeredItemIndex;
+        var centerLeavingItem = this.state.centeredItemIndex,
+            floorIndex = Math.floor(offset / distanceBetweenItems),
+            ceilIndex = Math.ceil(offset / distanceBetweenItems);
+
+        if (floorIndex >= this.state.centeredItemIndex) {
+            centerLeavingItem = floorIndex;
+        } else {
+            centerLeavingItem = ceilIndex;
         }
+
         return centerLeavingItem;
     },
 
