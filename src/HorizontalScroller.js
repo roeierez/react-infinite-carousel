@@ -1,5 +1,5 @@
 var React = require('react'),
-    SCROLLING_TIME_CONSTANT = 70;
+    SCROLLING_TIME_CONSTANT = 250;
 
 var HorizontalScroller = React.createClass ({
 
