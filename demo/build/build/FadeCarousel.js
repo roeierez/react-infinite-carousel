@@ -16,34 +16,34 @@ var content = document.getElementById('content'),
     itemRenderer = function (index, progress) {
         var opacity = progress < 0.5 ? progress * 2 : (1 - progress) * 2;
 
-        return <div style={{marginTop: '50px', height: '50%'}}>
-            <div style={{
+        return React.createElement("div", {style: {height: '50%'}}, 
+            React.createElement("div", {style: {
                 opacity: opacity,
                 height: '100%',
                 border: 'solid 2px white',
                 color: 'white'
-            }}>
-                <img src={contentImages[index % 5].url} width='100%' height='100%'/>
-            </div>
-            <div style={{
+            }}, 
+                React.createElement("img", {src: contentImages[index % 5].url, width: "100%", height: "100%"})
+            ), 
+            React.createElement("div", {style: {
                 opacity: opacity,
                 fontSize: '30px',
                 color: 'white',
                 textAlign: 'center',
                 marginTop: '20px'
-            }}>{contentImages[index % 5].text}</div>
-        </div>;
+            }}, contentImages[index % 5].text)
+        );
     },
 
     backgroundRenderer = function (index) {
         //return <div style={{height: '100%', width: '100%', backgroundColor: 'red'}}></div>;
         //return <img style={{width: '100%', height: '100%'}} src={images[index % 3]} />;
-        return <img style={{WebkitTransform: 'translate3d(0px,0px,0px)', filter: 'brightness(30%)', WebkitFilter: 'brightness(40%)', width: '100%', height: '100%'}} src={images[index % 3]} />;
+        return React.createElement("img", {style: {WebkitTransform: 'translate3d(0px,0px,0px)', filter: 'brightness(30%)', WebkitFilter: 'brightness(40%)', width: '100%', height: '100%'}, src: images[index % 3]});
     }
 
-React.render(<Carousel
-    backgroundRenderer={backgroundRenderer}
-    itemRenderer={itemRenderer}
-    itemsCount={10}
-/>, content);
+React.render(React.createElement(Carousel, {
+    backgroundRenderer: backgroundRenderer, 
+    itemRenderer: itemRenderer, 
+    itemsCount: 10}
+), content);
 

@@ -16,7 +16,7 @@ var content = document.getElementById('content'),
     itemRenderer = function (index, progress) {
         var opacity = progress < 0.5 ? progress * 2 : (1 - progress) * 2;
 
-        return React.createElement("div", {style: {height: '50%'}}, 
+        return React.createElement("div", {style: {marginTop: '50px', height: '50%'}}, 
             React.createElement("div", {style: {
                 opacity: opacity,
                 height: '100%',
