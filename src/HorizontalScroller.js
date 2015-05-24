@@ -62,7 +62,7 @@ var HorizontalScroller = React.createClass ({
             delta = this.amplitude * Math.exp(-elapsed / SCROLLING_TIME_CONSTANT);
             if (delta > 10 || delta < -10) {
                 this.scroll(this.target - delta);
-                requestAnimationFrame(this.autoScroll.bind(this));
+                requestAnimationFrame(this.autoScroll);
             } else {
                 this.scroll(this.target);
             }
@@ -77,11 +77,10 @@ var HorizontalScroller = React.createClass ({
         this.frame = this.offset;
         this.timestamp = Date.now();
         clearInterval(this.ticker);
-        this.ticker = setInterval(this.track.bind(this), 10);
+        this.ticker = setInterval(this.track, 10);
 
         e.preventDefault();
         e.stopPropagation();
-        return false;
     },
 
     drag: function(e) {
@@ -96,7 +95,6 @@ var HorizontalScroller = React.createClass ({
         }
         e.preventDefault();
         e.stopPropagation();
-        return false;
     },
 
     release: function(e) {
@@ -122,11 +120,10 @@ var HorizontalScroller = React.createClass ({
 
         this.amplitude = this.target - this.offset;
         this.timestamp = Date.now();
-        requestAnimationFrame(this.autoScroll.bind(this));
+        requestAnimationFrame(this.autoScroll);
 
         e.preventDefault();
         e.stopPropagation();
-        return false;
     }
 });
 

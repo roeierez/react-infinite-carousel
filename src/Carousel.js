@@ -45,7 +45,6 @@ var carousel = React.createClass({
     },
 
     onScroll: function (offset) {
-        console.error('offset = ' + offset + ' maxsize=' + this.getScrollerSize());
         var itemsSpacing = this.getItemsSpacing(),
             distanceBetweenItems = this.getItemWidth() + itemsSpacing,
             centeredItem = Math.max(0, Math.min(this.props.itemsCount - 1,  this.getCenterLeavingItem(offset, distanceBetweenItems) )),
@@ -148,7 +147,7 @@ var carousel = React.createClass({
 
         return (
             <HorizontalScroller size={this.getScrollerSize()} snap={itemWidth + itemsSpacing} onScroll={this.onScroll}>
-                <div onResize style={{width: containerWidth, height: '100%', overflow: 'hidden', position: 'relative'}}>
+                <div style={{width: containerWidth, height: '100%', overflow: 'hidden', position: 'relative'}}>
                     {scrolledOutItemBackground}
                     {scrolledInItemBackground}
                     {itemsToRender}

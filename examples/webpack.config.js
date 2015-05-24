@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 module.exports = {
 
   output: {
@@ -5,8 +6,15 @@ module.exports = {
     filename: 'FadeCarousel.js'
   },
 
-  debug: true,
+  debug: false,
   entry: './FadeCarousel.js',
+
+  plugins: [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin()
+  ],
 
   stats: {
     colors: true,
