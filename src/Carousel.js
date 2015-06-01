@@ -1,8 +1,7 @@
 var React = require('react'),
     HorizontalScroller = require('./HorizontalScroller.js'),
     StyleHelper = require('./StyleHelper.js'),
-    DEFAULT_ITEMS_TO_RENDER_COUNT = 2,
-    DEFAULT_ITEM_SPACING = 50;
+    DEFAULT_ITEMS_TO_RENDER_COUNT = 2;
 
 var carousel = React.createClass({
 
@@ -14,7 +13,7 @@ var carousel = React.createClass({
     },
 
     componentDidMount: function(){
-        this.containerWidth = React.findDOMNode(this).clientWidth;
+        this.parentElementWidth = React.findDOMNode(this).clientWidth;
         window.addEventListener('resize', this.onResize.bind(this));
         this.forceUpdate();
     },
@@ -24,12 +23,16 @@ var carousel = React.createClass({
     },
 
     onResize: function(){
-        this.containerWidth = React.findDOMNode(this).clientWidth;
+        this.parentElementWidth = React.findDOMNode(this).clientWidth;
         this.forceUpdate();
     },
 
+    getContainerWidth: function(){
+        return this.props.width || this.parentElementWidth;
+    },
+
     getItemWidth: function(){
-        return this.props.itemWidth || this.containerWidth / 2 || 0;
+        return this.props.itemWidth || this.getContainerWidth() / 2 || 0;
     },
 
     getItemsPerSide: function(){
@@ -48,8 +51,8 @@ var carousel = React.createClass({
         var itemsSpacing = this.getItemsSpacing(),
             distanceBetweenItems = this.getItemWidth() + itemsSpacing,
             centeredItem = Math.max(0, Math.min(this.props.itemsCount - 1,  this.getCenterLeavingItem(offset, distanceBetweenItems) )),
-            containerStartOffset = centeredItem * distanceBetweenItems - this.containerWidth / 2 - this.getItemWidth() / 2,
-            relativeProgress = (offset - containerStartOffset) / (this.containerWidth + this.getItemWidth());
+            containerStartOffset = centeredItem * distanceBetweenItems - this.getContainerWidth() / 2 - this.getItemWidth() / 2,
+            relativeProgress = (offset - containerStartOffset) / (this.getContainerWidth() + this.getItemWidth());
 
         this.setState({
             centeredItemIndex: centeredItem,
@@ -73,7 +76,7 @@ var carousel = React.createClass({
 
     renderCarouselItem: function (index, translateX) {
         var itemWidth = this.getItemWidth(),
-            containerWidth = this.containerWidth,
+            containerWidth = this.getContainerWidth(),
             progress = (translateX + itemWidth) / (containerWidth + itemWidth),
             itemStyle = StyleHelper.applyTranslateStyle({
                 justifyContent: 'center',
@@ -96,7 +99,7 @@ var carousel = React.createClass({
     renderBackgroundItem: function (index, translateX, givenOpacity) {
         var itemWidth = this.getItemWidth(),
             itemsSpacing = this.getItemsSpacing(),
-            containerWidth = this.containerWidth,
+            containerWidth = this.getContainerWidth(),
             distanceFromCenter1 = Math.abs(translateX - containerWidth / 2 + itemWidth / 2),
             opacity = givenOpacity ? givenOpacity : 1 - distanceFromCenter1 / (itemWidth / 2 + itemsSpacing),
             backgroundStyle = StyleHelper.applyTranslateStyle({
@@ -117,10 +120,10 @@ var carousel = React.createClass({
 
     render: function () {
         var itemWidth = this.getItemWidth(),
-            containerWidth = this.containerWidth,
+            containerWidth = this.getContainerWidth(),
             itemsSpacing = this.getItemsSpacing(),
 
-            centerItemTranslateX = (this.containerWidth - (this.state.centerItemProgress * (this.containerWidth + itemWidth))) || 0,
+            centerItemTranslateX = (containerWidth - (this.state.centerItemProgress * (containerWidth + itemWidth))) || 0,
             itemsToRender = [this.renderCarouselItem(this.state.centeredItemIndex, centerItemTranslateX)];
 
         for (var i = 1; i <= this.getItemsPerSide(); ++i) {
@@ -161,7 +164,7 @@ carousel.propTypes = {
     backgroundRenderer: React.PropTypes.func,
     itemRenderer: React.PropTypes.func,
     itemWidth: React.PropTypes.number,
-    containerWidth: React.PropTypes.number,
+    width: React.PropTypes.number,
     spacing: React.PropTypes.number,
     numberOfRenderItemsPerSide: React.PropTypes.number,
     itemsCount: React.PropTypes.number
