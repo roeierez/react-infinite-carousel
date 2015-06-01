@@ -12,7 +12,7 @@ module.exports = {
 
   output: {
     path: 'dist/',
-    filename: 'Carousel.min.js',
+    filename: 'Carousel.js',
     library: "Carousel",
     libraryTarget: "umd"
   },
@@ -35,13 +35,6 @@ module.exports = {
         amd: "react"
       }
     }
-  ],
-
-  plugins: [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin()
   ],
 
   module: {
