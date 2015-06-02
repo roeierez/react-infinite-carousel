@@ -1,7 +1,7 @@
 {
   "name": "react-infinite-carousel",
-  "version": "0.0.4",
-  "description": "Inifinite carousel implemented with React",
+  "version": "0.0.6",
+  "description": "Infinite carousel implemented with React",
   "main": "src/Carousel.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,8 +16,6 @@
     "react-component",
     "infinite"
   ],
-  "src": "src",
-  "dist": "dist",
   "dependencies": {
     "react": "~0.13.3"
   },
@@ -30,5 +28,8 @@
   "devDependencies": {
     "jsx-loader": "^0.13.2",
     "webpack": "~1.4.3"
+  },
+  "directories": {
+    "example": "examples"
   }
 }
