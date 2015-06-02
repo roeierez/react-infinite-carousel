@@ -1,13 +1,32 @@
 {
   "name": "react-infinite-carousel",
   "version": "0.0.1",
-  "description": "inifinite carousel implemented with React",
-  "repository": "",
+  "description": "Inifinite carousel implemented with React",
+  "main": "src/Carousel.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/roeierez/react-infinite-carousel.git"
+  },
+  "keywords": [
+    "carousel",
+    "react",
+    "react-component",
+    "infinite"
+  ],
   "src": "src",
   "dist": "dist",
   "dependencies": {
     "react": "~0.13.3"
   },
+  "author": "Roei Erez <roeierez@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/roeierez/react-infinite-carousel/issues"
+  },
+  "homepage": "http://roeierez.github.io/react-infinite-carousel/",
   "devDependencies": {
     "jsx-loader": "^0.13.2",
     "webpack": "~1.4.3"
