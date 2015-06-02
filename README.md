@@ -46,6 +46,9 @@ If you need it as a standalone script that is referenced from your html file the
 ### bower
 bower install react-infinite-carousel
 
+### npm
+npm install react-infinite-carousel
+
 #Building the examples
 ```bash
     cd examples
