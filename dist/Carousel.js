@@ -343,17 +343,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.pressed = false;
 
 	        clearInterval(this.ticker);
-	        this.target = this.offset;
-	        if (this.velocity > 10 || this.velocity < -10) {
-	            this.amplitude = 1.2 * this.velocity;
-	            this.target = this.offset + this.amplitude;
-	        }
-
-	        if (Math.floor(this.offset / snap) * snap < this.target) {
-	            this.target = Math.floor(this.offset / snap) * snap + snap;
-	        } else if (Math.ceil(this.offset / snap) * snap > this.target) {
-	            this.target = Math.ceil(this.offset / snap) * snap - snap;
-	        }
+	        this.amplitude = 1.2 * this.velocity;
+	        this.target = this.velocity < 0 ? Math.ceil(this.offset / snap) * snap - snap :  Math.floor(this.offset / snap) * snap + snap;
 
 	        if (typeof this.props.size == 'number') {
 	            this.target = Math.max(0, Math.min(this.props.size, Math.round(this.target / snap) * snap));
