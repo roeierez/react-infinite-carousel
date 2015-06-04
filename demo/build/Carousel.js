@@ -1,1 +1,391 @@
-!function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e(require("react")):"function"==typeof define&&define.amd?define(["react"],e):"object"==typeof exports?exports.Carousel=e(require("react")):t.Carousel=e(t.React)}(this,function(t){return function(t){function e(s){if(i[s])return i[s].exports;var r=i[s]={exports:{},id:s,loaded:!1};return t[s].call(r.exports,r,r.exports,e),r.loaded=!0,r.exports}var i={};return e.m=t,e.c=i,e.p="",e(0)}([function(t,e,i){var s=i(1),r=i(2),n=i(3),o=2,a=s.createClass({displayName:"carousel",getInitialState:function(){return{centeredItemIndex:0,centerItemProgress:.5}},componentDidMount:function(){this.containerWidth=s.findDOMNode(this).clientWidth,window.addEventListener("resize",this.onResize.bind(this)),this.forceUpdate()},componentWillUnmount:function(){window.removeEventListener("resize",this.onResize.bind(this))},onResize:function(){this.containerWidth=s.findDOMNode(this).clientWidth,this.forceUpdate()},getItemWidth:function(){return this.props.itemWidth||this.containerWidth/2||0},getItemsPerSide:function(){return this.props.numberOfRenderItemsPerSide||o},getScrollerSize:function(){return(this.props.itemsCount-1)*(this.getItemWidth()+this.getItemsSpacing())},getItemsSpacing:function(){return this.props.spacing||this.getItemWidth()/6||0},onScroll:function(t){var e=this.getItemsSpacing(),i=this.getItemWidth()+e,s=Math.max(0,Math.min(this.props.itemsCount-1,this.getCenterLeavingItem(t,i))),r=s*i-this.containerWidth/2-this.getItemWidth()/2,n=(t-r)/(this.containerWidth+this.getItemWidth());this.setState({centeredItemIndex:s,centerItemProgress:n})},getCenterLeavingItem:function(t,e){var i=this.state.centeredItemIndex,s=Math.floor(t/e),r=Math.ceil(t/e);return i=s>=this.state.centeredItemIndex?s:r},renderCarouselItem:function(t,e){var i=this.getItemWidth(),r=this.containerWidth,o=(e+i)/(r+i),a=n.applyTranslateStyle({justifyContent:"center",display:"flex",flexDirection:"column",width:this.getItemWidth(),height:"100%",position:"absolute",top:"0px",left:"0px"},e,0,0);return s.createElement("div",{key:"carouselItem"+t%(2*this.getItemsPerSide()+1),style:a},this.props.itemRenderer(t,o))},renderBackgroundItem:function(t,e,i){var r=this.getItemWidth(),o=this.getItemsSpacing(),a=this.containerWidth,h=Math.abs(e-a/2+r/2),c=i?i:1-h/(r/2+o),p=n.applyTranslateStyle({opacity:c,width:a,height:"100%",position:"absolute",top:"0px",left:"0px"},0,0,0);return s.createElement("div",{key:"background"+t,style:p},this.props.backgroundRenderer(t))},render:function(){for(var t=this.getItemWidth(),e=this.containerWidth,i=this.getItemsSpacing(),n=this.containerWidth-this.state.centerItemProgress*(this.containerWidth+t)||0,o=[this.renderCarouselItem(this.state.centeredItemIndex,n)],a=1;a<=this.getItemsPerSide();++a)this.state.centeredItemIndex-a>=0&&o.unshift(this.renderCarouselItem(this.state.centeredItemIndex-a,n-a*i-a*t)),this.state.centeredItemIndex+a<this.props.itemsCount&&o.push(this.renderCarouselItem(this.state.centeredItemIndex+a,n+a*i+a*t));var h=this.renderBackgroundItem(this.state.centeredItemIndex,n,1),c=h,p=this.state.centerItemProgress>.5;return p?this.state.centeredItemIndex<this.props.itemsCount-1&&(c=this.renderBackgroundItem(this.state.centeredItemIndex+1,n+i+t)):this.state.centeredItemIndex>0&&(c=this.renderBackgroundItem(this.state.centeredItemIndex-1,n-i-t)),s.createElement(r,{size:this.getScrollerSize(),snap:t+i,onScroll:this.onScroll},s.createElement("div",{style:{width:e,height:"100%",overflow:"hidden",position:"relative"}},h,c,o))}});a.propTypes={backgroundRenderer:s.PropTypes.func,itemRenderer:s.PropTypes.func,itemWidth:s.PropTypes.number,containerWidth:s.PropTypes.number,spacing:s.PropTypes.number,numberOfRenderItemsPerSide:s.PropTypes.number,itemsCount:s.PropTypes.number},t.exports=a},function(e,i,s){e.exports=t},function(t,e,i){var s=i(1),r=250,n=s.createClass({displayName:"HorizontalScroller",timestamp:0,frame:0,velocity:0,amplitude:0,pressed:0,ticker:0,reference:0,offset:0,target:0,render:function(){return s.createElement("div",{onTouchStart:this.tap,onTouchMove:this.drag,onTouchEnd:this.release,onMouseDown:this.tap,onMouseMove:this.drag,onMouseUp:this.release,style:{height:"100%",width:"100%"}},s.Children.only(this.props.children))},xpos:function(t){return t.targetTouches&&t.targetTouches.length>=1?t.targetTouches[0].clientX:t.clientX},track:function(){var t,e,i,s;t=Date.now(),e=t-this.timestamp,this.timestamp=t,i=this.offset-this.frame,this.frame=this.offset,s=1e3*i/(1+e),this.velocity=.8*s+.2*this.velocity},scroll:function(t){this.offset=t,this.props.onScroll(t)},autoScroll:function(){var t,e;this.amplitude&&(t=Date.now()-this.timestamp,e=this.amplitude*Math.exp(-t/r),e>10||-10>e?(this.scroll(this.target-e),requestAnimationFrame(this.autoScroll)):this.scroll(this.target))},tap:function(t){this.pressed=!0,this.reference=this.xpos(t),this.velocity=this.amplitude=0,this.frame=this.offset,this.timestamp=Date.now(),clearInterval(this.ticker),this.ticker=setInterval(this.track,10),t.preventDefault(),t.stopPropagation()},drag:function(t){var e,i;this.pressed&&(e=this.xpos(t),i=this.reference-e,(i>2||-2>i)&&(this.reference=e,this.scroll(this.offset+i))),t.preventDefault(),t.stopPropagation()},release:function(t){var e=this.props.snap;this.pressed=!1,clearInterval(this.ticker),this.target=this.offset,(this.velocity>10||this.velocity<-10)&&(this.amplitude=1.2*this.velocity,this.target=this.offset+this.amplitude),Math.floor(this.offset/e)*e<this.target?this.target=Math.floor(this.offset/e)*e+e:Math.ceil(this.offset/e)*e>this.target&&(this.target=Math.ceil(this.offset/e)*e-e),"number"==typeof this.props.size&&(this.target=Math.max(0,Math.min(this.props.size,Math.round(this.target/e)*e))),this.amplitude=this.target-this.offset,this.timestamp=Date.now(),requestAnimationFrame(this.autoScroll),t.preventDefault(),t.stopPropagation()}});n.propTypes={onScroll:s.PropTypes.func,snap:s.PropTypes.number,size:s.PropTypes.number},t.exports=n},function(t,e,i){t.exports={applyTranslateStyle:function(t,e,i,s){var r="translate3d("+e.toString()+"px,"+i+"px,"+s+"px)";return t.Transform=r,t.WebkitTransform=r,t.MsTransform=r,t.MozTransform=r,t}}}])});
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("react"));
+	else if(typeof define === 'function' && define.amd)
+		define(["react"], factory);
+	else if(typeof exports === 'object')
+		exports["Carousel"] = factory(require("react"));
+	else
+		root["Carousel"] = factory(root["React"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    HorizontalScroller = __webpack_require__(2),
+	    StyleHelper = __webpack_require__(3),
+	    DEFAULT_ITEMS_TO_RENDER_COUNT = 2;
+
+	var carousel = React.createClass({displayName: "carousel",
+
+	    getInitialState: function () {
+	        return {
+	            centeredItemIndex: 0,
+	            centerItemProgress: 0.5
+	        };
+	    },
+
+	    componentDidMount: function(){
+	        this.parentElementWidth = React.findDOMNode(this).clientWidth;
+	        window.addEventListener('resize', this.onResize.bind(this));
+	        this.forceUpdate();
+	    },
+
+	    componentWillUnmount: function(){
+	        window.removeEventListener('resize', this.onResize.bind(this));
+	    },
+
+	    onResize: function(){
+	        this.parentElementWidth = React.findDOMNode(this).clientWidth;
+	        this.forceUpdate();
+	    },
+
+	    getContainerWidth: function(){
+	        return this.props.width || this.parentElementWidth;
+	    },
+
+	    getItemWidth: function(){
+	        return this.props.itemWidth || this.getContainerWidth() / 2 || 0;
+	    },
+
+	    getItemsPerSide: function(){
+	        return this.props.numberOfRenderItemsPerSide || DEFAULT_ITEMS_TO_RENDER_COUNT;
+	    },
+
+	    getScrollerSize: function(){
+	        return (this.props.itemsCount - 1) * (this.getItemWidth() + this.getItemsSpacing());
+	    },
+
+	    getItemsSpacing: function(){
+	        return this.props.spacing || this.getItemWidth() / 6 || 0;
+	    },
+
+	    onScroll: function (offset) {
+	        var itemsSpacing = this.getItemsSpacing(),
+	            distanceBetweenItems = this.getItemWidth() + itemsSpacing,
+	            centeredItem = Math.max(0, Math.min(this.props.itemsCount - 1,  this.getCenterLeavingItem(offset, distanceBetweenItems) )),
+	            containerStartOffset = centeredItem * distanceBetweenItems - this.getContainerWidth() / 2 - this.getItemWidth() / 2,
+	            relativeProgress = (offset - containerStartOffset) / (this.getContainerWidth() + this.getItemWidth());
+
+	        this.setState({
+	            centeredItemIndex: centeredItem,
+	            centerItemProgress: relativeProgress
+	        });
+	    },
+
+	    getCenterLeavingItem: function (offset, distanceBetweenItems) {
+	        var centerLeavingItem = this.state.centeredItemIndex,
+	            floorIndex = Math.floor(offset / distanceBetweenItems),
+	            ceilIndex = Math.ceil(offset / distanceBetweenItems);
+
+	        if (floorIndex >= this.state.centeredItemIndex) {
+	            centerLeavingItem = floorIndex;
+	        } else {
+	            centerLeavingItem = ceilIndex;
+	        }
+
+	        return centerLeavingItem;
+	    },
+
+	    renderCarouselItem: function (index, translateX) {
+	        var itemWidth = this.getItemWidth(),
+	            containerWidth = this.getContainerWidth(),
+	            progress = (translateX + itemWidth) / (containerWidth + itemWidth),
+	            itemStyle = StyleHelper.applyTranslateStyle({
+	                justifyContent: 'center',
+	                display: 'flex',
+	                flexDirection: 'column',
+	                width: this.getItemWidth(),
+	                height: '100%',
+	                position: 'absolute',
+	                top: '0px',
+	                left: '0px'
+	            }, translateX, 0, 0);
+
+	        return (
+	            React.createElement("div", {key: "carouselItem" + (index % (2 * this.getItemsPerSide() + 1 )), style: itemStyle}, 
+	                this.props.itemRenderer(index, progress)
+	            )
+	        );
+	    },
+
+	    renderBackgroundItem: function (index, translateX, givenOpacity) {
+	        var itemWidth = this.getItemWidth(),
+	            itemsSpacing = this.getItemsSpacing(),
+	            containerWidth = this.getContainerWidth(),
+	            distanceFromCenter1 = Math.abs(translateX - containerWidth / 2 + itemWidth / 2),
+	            opacity = givenOpacity ? givenOpacity : 1 - distanceFromCenter1 / (itemWidth / 2 + itemsSpacing),
+	            backgroundStyle = StyleHelper.applyTranslateStyle({
+	                opacity: opacity,
+	                width: containerWidth,
+	                height: '100%',
+	                position: 'absolute',
+	                top: '0px',
+	                left: '0px'
+	            }, 0,0,0);
+
+	        return (
+	            React.createElement("div", {key: "background" + index, style: backgroundStyle}, 
+	                this.props.backgroundRenderer(index)
+	            )
+	        );
+	    },
+
+	    render: function () {
+	        var itemWidth = this.getItemWidth(),
+	            containerWidth = this.getContainerWidth(),
+	            itemsSpacing = this.getItemsSpacing(),
+
+	            centerItemTranslateX = (containerWidth - (this.state.centerItemProgress * (containerWidth + itemWidth))) || 0,
+	            itemsToRender = [this.renderCarouselItem(this.state.centeredItemIndex, centerItemTranslateX)];
+
+	        for (var i = 1; i <= this.getItemsPerSide(); ++i) {
+	            if (this.state.centeredItemIndex - i >= 0) {
+	                itemsToRender.unshift(this.renderCarouselItem(this.state.centeredItemIndex - i, centerItemTranslateX - i * itemsSpacing - i * itemWidth));
+	            }
+
+	            if (this.state.centeredItemIndex + i < this.props.itemsCount)
+	            itemsToRender.push(this.renderCarouselItem(this.state.centeredItemIndex + i, centerItemTranslateX + i * itemsSpacing + i * itemWidth));
+	        }
+
+	        var scrolledOutItemBackground = this.renderBackgroundItem(this.state.centeredItemIndex, centerItemTranslateX, 1),
+	            scrolledInItemBackground = scrolledOutItemBackground,
+	            scrollingRight = this.state.centerItemProgress > 0.5;
+
+	        if (scrollingRight) {
+	            if (this.state.centeredItemIndex < this.props.itemsCount - 1) {
+	                scrolledInItemBackground = this.renderBackgroundItem(this.state.centeredItemIndex + 1, centerItemTranslateX + itemsSpacing + itemWidth);
+	            }
+	        } else if (this.state.centeredItemIndex > 0 ) {
+	            scrolledInItemBackground = this.renderBackgroundItem(this.state.centeredItemIndex - 1, centerItemTranslateX - itemsSpacing - itemWidth);
+	        }
+
+
+	        return (
+	            React.createElement(HorizontalScroller, {size: this.getScrollerSize(), snap: itemWidth + itemsSpacing, onScroll: this.onScroll}, 
+	                React.createElement("div", {style: {width: containerWidth, height: '100%', overflow: 'hidden', position: 'relative'}}, 
+	                    scrolledOutItemBackground, 
+	                    scrolledInItemBackground, 
+	                    itemsToRender
+	                )
+	            )
+	        )
+	    }
+	});
+
+	carousel.propTypes = {
+	    backgroundRenderer: React.PropTypes.func,
+	    itemRenderer: React.PropTypes.func,
+	    itemWidth: React.PropTypes.number,
+	    width: React.PropTypes.number,
+	    spacing: React.PropTypes.number,
+	    numberOfRenderItemsPerSide: React.PropTypes.number,
+	    itemsCount: React.PropTypes.number
+	};
+
+	module.exports = carousel;
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1),
+	    SCROLLING_TIME_CONSTANT = 250;
+
+	var HorizontalScroller = React.createClass ({displayName: "HorizontalScroller",
+
+	    timestamp: 0,
+	    frame: 0,
+	    velocity:0,
+	    amplitude: 0,
+	    pressed: 0,
+	    ticker: 0,
+	    reference: 0,
+	    offset: 0,
+	    target: 0,
+
+	    render: function() {
+	        //return React.Children.only(this.props.children);
+	        return React.createElement("div", {
+	                    onTouchStart: this.tap, 
+	                    onTouchMove: this.drag, 
+	                    onTouchEnd: this.release, 
+	                    onMouseDown: this.tap, 
+	                    onMouseMove: this.drag, 
+	                    onMouseUp: this.release, 
+	                    style: {height: '100%', width: '100%'}}, React.Children.only(this.props.children)
+	            );
+	    },
+
+	    xpos: function(e) {
+	        // touch event
+	        if (e.targetTouches && (e.targetTouches.length >= 1)) {
+	            return e.targetTouches[0].clientX;
+	        }
+
+	        // mouse event
+	        return e.clientX;
+	    },
+
+	    track: function() {
+	        var now, elapsed, delta, v;
+
+	        now = Date.now();
+	        elapsed = now - this.timestamp;
+	        this.timestamp = now;
+	        delta = this.offset - this.frame;
+	        this.frame = this.offset;
+
+	        v = 1000 * delta / (1 + elapsed);
+	        this.velocity = 0.8 * v + 0.2 * this.velocity;
+	    },
+
+	    scroll: function(x){
+	        this.offset = x;
+	        this.props.onScroll(x);
+	    },
+
+	    autoScroll: function() {
+	        var elapsed, delta;
+
+	        if (this.amplitude) {
+	            elapsed = Date.now() - this.timestamp;
+	            delta = this.amplitude * Math.exp(-elapsed / SCROLLING_TIME_CONSTANT);
+	            if (delta > 10 || delta < -10) {
+	                this.scroll(this.target - delta);
+	                requestAnimationFrame(this.autoScroll);
+	            } else {
+	                this.scroll(this.target);
+	            }
+	        }
+	    },
+
+	    tap: function (e) {
+	        this.pressed = true;
+	        this.reference = this.xpos(e);
+
+	        this.velocity = this.amplitude = 0;
+	        this.frame = this.offset;
+	        this.timestamp = Date.now();
+	        clearInterval(this.ticker);
+	        this.ticker = setInterval(this.track, 10);
+
+	        e.preventDefault();
+	        e.stopPropagation();
+	    },
+
+	    drag: function(e) {
+	        var x, delta;
+	        if (this.pressed) {
+	            x = this.xpos(e);
+	            delta = this.reference - x;
+	            if (delta > 2 || delta < -2) {
+	                this.reference = x;
+	                this.scroll(this.offset + delta);
+	            }
+	        }
+	        e.preventDefault();
+	        e.stopPropagation();
+	    },
+
+	    release: function(e) {
+	        var snap = this.props.snap;
+	        this.pressed = false;
+
+	        clearInterval(this.ticker);
+	        this.amplitude = 1.2 * this.velocity;
+	        this.target = this.velocity < 0 ? Math.ceil(this.offset / snap) * snap - snap :  Math.floor(this.offset / snap) * snap + snap;
+
+	        if (typeof this.props.size == 'number') {
+	            this.target = Math.max(0, Math.min(this.props.size, Math.round(this.target / snap) * snap));
+	        }
+
+	        this.amplitude = this.target - this.offset;
+	        this.timestamp = Date.now();
+	        requestAnimationFrame(this.autoScroll);
+
+	        e.preventDefault();
+	        e.stopPropagation();
+	    }
+	});
+
+	HorizontalScroller.propTypes = {
+	    onScroll: React.PropTypes.func,
+	    snap: React.PropTypes.number,
+	    size: React.PropTypes.number
+	}
+
+	module.exports = HorizontalScroller;
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	
+	module.exports = {
+	    applyTranslateStyle: function(currentStyle, x, y, z){
+	        var styleValue = 'translate3d(' + x.toString() + 'px,' + y + 'px,' + z + 'px)';
+	        currentStyle['Transform'] = styleValue;
+	        currentStyle['WebkitTransform'] = styleValue;
+	        currentStyle['MsTransform'] = styleValue;
+	        currentStyle['MozTransform'] = styleValue;
+	        return currentStyle;
+	    }
+	}
+
+
+
+/***/ }
+/******/ ])
+});
