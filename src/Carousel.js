@@ -74,11 +74,8 @@ var carousel = React.createClass({
         return centerLeavingItem;
     },
 
-    renderCarouselItem: function (index, translateX) {
-        var itemWidth = this.getItemWidth(),
-            containerWidth = this.getContainerWidth(),
-            progress = (translateX + itemWidth) / (containerWidth + itemWidth),
-            itemStyle = StyleHelper.applyTranslateStyle({
+    renderCarouselItem: function (index, translateX, progress) {
+        var itemStyle = StyleHelper.applyTranslateStyle({
                 justifyContent: 'center',
                 display: 'flex',
                 flexDirection: 'column',
@@ -122,22 +119,33 @@ var carousel = React.createClass({
         var itemWidth = this.getItemWidth(),
             containerWidth = this.getContainerWidth(),
             itemsSpacing = this.getItemsSpacing(),
+            scrollingRight = this.state.centerItemProgress > 0.5,
 
             centerItemTranslateX = (containerWidth - (this.state.centerItemProgress * (containerWidth + itemWidth))) || 0,
             itemsToRender = [this.renderCarouselItem(this.state.centeredItemIndex, centerItemTranslateX)];
 
         for (var i = 1; i <= this.getItemsPerSide(); ++i) {
+            var currentItemProgress = 0,
+                currentItemTranslate = 0;
+
             if (this.state.centeredItemIndex - i >= 0) {
-                itemsToRender.unshift(this.renderCarouselItem(this.state.centeredItemIndex - i, centerItemTranslateX - i * itemsSpacing - i * itemWidth));
+                currentItemTranslate  = centerItemTranslateX - i * itemsSpacing - i * itemWidth;
+                currentItemProgress = (currentItemTranslate + itemWidth) / (containerWidth + itemWidth);
+                itemsToRender.unshift(this.renderCarouselItem(this.state.centeredItemIndex - i, currentItemTranslate, currentItemProgress));
             }
 
-            if (this.state.centeredItemIndex + i < this.props.itemsCount)
-            itemsToRender.push(this.renderCarouselItem(this.state.centeredItemIndex + i, centerItemTranslateX + i * itemsSpacing + i * itemWidth));
+            if (this.state.centeredItemIndex + i < this.props.itemsCount) {
+                currentItemTranslate  = centerItemTranslateX + i * itemsSpacing + i * itemWidth;
+                currentItemProgress = (currentItemTranslate + itemWidth) / (containerWidth + itemWidth);
+                itemsToRender.push(this.renderCarouselItem(this.state.centeredItemIndex + i, currentItemTranslate, currentItemProgress));
+                if (i == 1 && scrollingRight) {
+
+                }
+            }
         }
 
         var scrolledOutItemBackground = this.renderBackgroundItem(this.state.centeredItemIndex, centerItemTranslateX, 1),
-            scrolledInItemBackground = scrolledOutItemBackground,
-            scrollingRight = this.state.centerItemProgress > 0.5;
+            scrolledInItemBackground = scrolledOutItemBackground;
 
         if (scrollingRight) {
             if (this.state.centeredItemIndex < this.props.itemsCount - 1) {
