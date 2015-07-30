@@ -80,9 +80,6 @@ var carousel = React.createClass({
             itemProgress = this.getItemProgress(index),
             itemTranslate = itemProgress * (containerWidth + itemWidth) - itemWidth,
             itemStyle = StyleHelper.applyTranslateStyle({
-                justifyContent: 'center',
-                display: 'flex',
-                flexDirection: 'column',
                 width: this.getItemWidth(),
                 height: '100%',
                 position: 'absolute',

@@ -18,10 +18,10 @@ var content = document.getElementById('content'),
     itemRenderer = function (index, progress) {
         var opacity = progress < 0.5 ? progress * 2 : (1 - progress) * 2;
 
-        return <div style={{height: '50%'}}>
+        return <div style={{height: '100%', justifyContent: 'center',  display: 'flex', flexDirection: 'column'}}>
             <div style={{
                 opacity: opacity,
-                height: '100%',
+                height: '50%',
                 border: 'solid 2px white',
                 color: 'white'
             }}>
