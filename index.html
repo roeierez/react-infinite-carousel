@@ -46,7 +46,7 @@ This enables the user to render according to position on screen, for example cha
 <a id="quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick Start</h2>
 
 <pre><code>var content = document.getElementById('content'),
-    backgroundRenderer = function(index){
+    backgroundRenderer = function(fromIndex, toIndex, progress){
       return &lt;img src={"backgroundImage.jpg"} width: '100%', height: '100%'/&gt;
     },
     itemRenderer = function(index, progress){
