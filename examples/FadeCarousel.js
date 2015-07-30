@@ -18,52 +18,22 @@ var content = document.getElementById('content'),
     itemRenderer = function (index, progress) {
         var opacity = progress < 0.5 ? progress * 2 : (1 - progress) * 2;
 
-        return <div style={{height: '100%', justifyContent: 'center',  display: 'flex', flexDirection: 'column'}}>
-            <div style={{
-                opacity: opacity,
-                height: '50%',
-                border: 'solid 2px white',
-                color: 'white'
-            }}>
+        return <div className="item">
+            <div className="itemImageWrapper" style={{opacity: opacity}}>
                 <img src={contentImages[index % 5].url} width='100%' height='100%'/>
             </div>
-            <div style={{
-                opacity: opacity,
-                fontSize: '30px',
-                color: 'white',
-                textAlign: 'center',
-                marginTop: '20px'
-            }}>{contentImages[index % 5].text}</div>
+            <div className="textWrapper" style={{opacity: opacity}} >{contentImages[index % 5].text}</div>
         </div>;
-    },
-
-    getBackgroundImageStyle = function(additionalProperties){
-        var basicStyle = {
-            WebkitTransform: 'translate3d(0px,0px,0px)',
-            Transform: 'translate3d(0px,0px,0px)',
-            MsTransform: 'translate3d(0px,0px,0px)',
-            MozTransform: 'translate3d(0px,0px,0px)',
-            position: 'absolute',
-            top: '0px',
-            left: '0px',
-            width: '100%',
-            height: '100%'
-        };
-
-        Object.keys(additionalProperties || {}).forEach(function(key){
-            basicStyle[key] = additionalProperties[key];
-        });
-        return basicStyle;
     },
 
     backgroundRenderer = function(fromIndex, toIndex, progress){
         var children = [
-                <img  key={"bgImage " + (toIndex % 3)} style={getBackgroundImageStyle()} src={images[toIndex % 3]} />
+                <img  key={"bgImage " + (toIndex % 3)} className="backgroundImage" src={images[toIndex % 3]} />
             ],
             fadeOutOpacity = progress < 0.5 ? 1 : (1-progress) * 2;
 
         if (fromIndex != toIndex){
-            children.push(<img key={"bgImage " + (fromIndex % 3)} style={getBackgroundImageStyle({opacity: fadeOutOpacity})} src={images[fromIndex % 3]} />);
+            children.push(<img key={"bgImage " + (fromIndex % 3)} className="backgroundImage" style={{opacity: fadeOutOpacity}} src={images[fromIndex % 3]} />);
         }
 
         return <div style={{filter: 'brightness(30%)', WebkitFilter: 'brightness(40%)', width: '100%', height: '100%'}}>
