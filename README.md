@@ -11,7 +11,7 @@ This enables the user to render according to position on screen, for example cha
 ## Quick Start
 ```
 var content = document.getElementById('content'),
-    backgroundRenderer = function(index){
+    backgroundRenderer = function(fromIndex, toIndex, progress){
       return <img src={"backgroundImage.jpg"} width: '100%', height: '100%'/>
     },
     itemRenderer = function(index, progress){
