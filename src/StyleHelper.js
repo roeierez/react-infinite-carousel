@@ -4,7 +4,7 @@ module.exports = {
         var styleValue = 'translate3d(' + x.toString() + 'px,' + y + 'px,' + z + 'px)';
         currentStyle['Transform'] = styleValue;
         currentStyle['WebkitTransform'] = styleValue;
-        currentStyle['MsTransform'] = styleValue;
+        currentStyle['msTransform'] = styleValue;
         currentStyle['MozTransform'] = styleValue;
         return currentStyle;
     }

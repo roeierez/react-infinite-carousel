@@ -18,27 +18,27 @@ var content = document.getElementById('content'),
     itemRenderer = function (index, progress) {
         var opacity = progress < 0.5 ? progress * 2 : (1 - progress) * 2;
 
-        return <div style={{height: '50%'}}>
-            <div style={{
-                opacity: opacity,
-                height: '100%',
-                border: 'solid 2px white',
-                color: 'white'
-            }}>
+        return <div className="item">
+            <div className="itemImageWrapper" style={{opacity: opacity}}>
                 <img src={contentImages[index % 5].url} width='100%' height='100%'/>
             </div>
-            <div style={{
-                opacity: opacity,
-                fontSize: '30px',
-                color: 'white',
-                textAlign: 'center',
-                marginTop: '20px'
-            }}>{contentImages[index % 5].text}</div>
+            <div className="textWrapper" style={{opacity: opacity}} >{contentImages[index % 5].text}</div>
         </div>;
     },
 
-    backgroundRenderer = function (index) {
-        return <img style={{filter: 'brightness(30%)', WebkitFilter: 'brightness(40%)', width: '100%', height: '100%'}} src={images[index % 3]} />;
+    backgroundRenderer = function(fromIndex, toIndex, progress){
+        var children = [
+                <img  key={"bgImage " + (toIndex % 3)} className="backgroundImage" src={images[toIndex % 3]} />
+            ],
+            fadeOutOpacity = progress < 0.5 ? 1 : (1-progress) * 2;
+
+        if (fromIndex != toIndex){
+            children.push(<img key={"bgImage " + (fromIndex % 3)} className="backgroundImage" style={{opacity: fadeOutOpacity}} src={images[fromIndex % 3]} />);
+        }
+
+        return <div style={{filter: 'brightness(30%)', WebkitFilter: 'brightness(40%)', width: '100%', height: '100%'}}>
+                    {children}
+                </div>
     }
 
 React.render(<Carousel
