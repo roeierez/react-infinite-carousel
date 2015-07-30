@@ -70,12 +70,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    componentDidMount: function(){
 	        this.parentElementWidth = React.findDOMNode(this).clientWidth;
-	        window.addEventListener('resize', this.onResize.bind(this));
+	        window.addEventListener('resize', this.onResize);
 	        this.forceUpdate();
 	    },
 
 	    componentWillUnmount: function(){
-	        window.removeEventListener('resize', this.onResize.bind(this));
+	        window.removeEventListener('resize', this.onResize);
 	    },
 
 	    onResize: function(){
@@ -130,89 +130,78 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return centerLeavingItem;
 	    },
 
-	    renderCarouselItem: function (index, translateX) {
-	        var itemWidth = this.getItemWidth(),
-	            containerWidth = this.getContainerWidth(),
-	            progress = (translateX + itemWidth) / (containerWidth + itemWidth),
+	    renderItem: function(index){
+	        var containerWidth = this.getContainerWidth(),
+	            itemWidth = this.getItemWidth(),
+	            itemProgress = this.getItemProgress(index),
+	            itemTranslate = itemProgress * (containerWidth + itemWidth) - itemWidth,
 	            itemStyle = StyleHelper.applyTranslateStyle({
-	                justifyContent: 'center',
-	                display: 'flex',
-	                flexDirection: 'column',
 	                width: this.getItemWidth(),
 	                height: '100%',
 	                position: 'absolute',
 	                top: '0px',
 	                left: '0px'
-	            }, translateX, 0, 0);
+	            }, itemTranslate, 0, 0);
 
 	        return (
 	            React.createElement("div", {key: "carouselItem" + (index % (2 * this.getItemsPerSide() + 1 )), style: itemStyle}, 
-	                this.props.itemRenderer(index, progress)
+	                this.props.itemRenderer(index, itemProgress)
 	            )
 	        );
 	    },
 
-	    renderBackgroundItem: function (index, translateX, givenOpacity) {
-	        var itemWidth = this.getItemWidth(),
-	            itemsSpacing = this.getItemsSpacing(),
+	    getItemProgress: function(index){
+	        var shiftFromCenter = index - this.state.centeredItemIndex,
 	            containerWidth = this.getContainerWidth(),
-	            distanceFromCenter1 = Math.abs(translateX - containerWidth / 2 + itemWidth / 2),
-	            opacity = givenOpacity ? givenOpacity : 1 - distanceFromCenter1 / (itemWidth / 2 + itemsSpacing),
-	            backgroundStyle = StyleHelper.applyTranslateStyle({
-	                opacity: opacity,
-	                width: containerWidth,
-	                height: '100%',
-	                position: 'absolute',
-	                top: '0px',
-	                left: '0px'
-	            }, 0,0,0);
+	            itemsSpacing = this.getItemsSpacing(),
+	            itemWidth = this.getItemWidth(),
+	            centerItemTranslateX = (containerWidth - (this.state.centerItemProgress * (containerWidth + itemWidth))) || 0,
+	            currentItemTranslate  = centerItemTranslateX + shiftFromCenter * itemsSpacing + shiftFromCenter * itemWidth;
 
-	        return (
-	            React.createElement("div", {key: "background" + index, style: backgroundStyle}, 
-	                this.props.backgroundRenderer(index)
-	            )
-	        );
+	            return (currentItemTranslate + itemWidth) / (containerWidth + itemWidth);
 	    },
 
 	    render: function () {
-	        var itemWidth = this.getItemWidth(),
-	            containerWidth = this.getContainerWidth(),
-	            itemsSpacing = this.getItemsSpacing(),
-
-	            centerItemTranslateX = (containerWidth - (this.state.centerItemProgress * (containerWidth + itemWidth))) || 0,
-	            itemsToRender = [this.renderCarouselItem(this.state.centeredItemIndex, centerItemTranslateX)];
-
-	        for (var i = 1; i <= this.getItemsPerSide(); ++i) {
-	            if (this.state.centeredItemIndex - i >= 0) {
-	                itemsToRender.unshift(this.renderCarouselItem(this.state.centeredItemIndex - i, centerItemTranslateX - i * itemsSpacing - i * itemWidth));
-	            }
-
-	            if (this.state.centeredItemIndex + i < this.props.itemsCount)
-	            itemsToRender.push(this.renderCarouselItem(this.state.centeredItemIndex + i, centerItemTranslateX + i * itemsSpacing + i * itemWidth));
-	        }
-
-	        var scrolledOutItemBackground = this.renderBackgroundItem(this.state.centeredItemIndex, centerItemTranslateX, 1),
-	            scrolledInItemBackground = scrolledOutItemBackground,
-	            scrollingRight = this.state.centerItemProgress > 0.5;
-
-	        if (scrollingRight) {
-	            if (this.state.centeredItemIndex < this.props.itemsCount - 1) {
-	                scrolledInItemBackground = this.renderBackgroundItem(this.state.centeredItemIndex + 1, centerItemTranslateX + itemsSpacing + itemWidth);
-	            }
-	        } else if (this.state.centeredItemIndex > 0 ) {
-	            scrolledInItemBackground = this.renderBackgroundItem(this.state.centeredItemIndex - 1, centerItemTranslateX - itemsSpacing - itemWidth);
-	        }
-
-
 	        return (
-	            React.createElement(HorizontalScroller, {size: this.getScrollerSize(), snap: itemWidth + itemsSpacing, onScroll: this.onScroll}, 
-	                React.createElement("div", {style: {width: containerWidth, height: '100%', overflow: 'hidden', position: 'relative'}}, 
-	                    scrolledOutItemBackground, 
-	                    scrolledInItemBackground, 
-	                    itemsToRender
+	            React.createElement(HorizontalScroller, {size: this.getScrollerSize(), snap: this.getItemWidth() + this.getItemsSpacing(), onScroll: this.onScroll}, 
+	                React.createElement("div", {style: {width: this.getContainerWidth(), height: '100%', overflow: 'hidden', position: 'relative'}}, 
+	                    this.renderBackground(), 
+	                    this.renderItems()
 	                )
 	            )
 	        )
+	    },
+
+	    renderItems: function(){
+	        var itemsToRender = [this.renderItem(this.state.centeredItemIndex)];
+	        for (var i = 1; i <= this.getItemsPerSide(); ++i) {
+	            if (this.state.centeredItemIndex - i >= 0) {
+	                itemsToRender.unshift(this.renderItem(this.state.centeredItemIndex - i));
+	            }
+
+	            if (this.state.centeredItemIndex + i < this.props.itemsCount) {
+	                itemsToRender.push(this.renderItem(this.state.centeredItemIndex + i));
+	            }
+	        }
+
+	        return itemsToRender;
+	    },
+
+	    renderBackground: function(){
+	        var scrollingRight = this.state.centerItemProgress > 0.5,
+	            nextItem = this.state.centeredItemIndex,
+	            containerWidth = this.getContainerWidth(),
+	            itemWidth = this.getItemWidth();
+
+	        if (this.state.centerItemProgress != 0.5) {
+	            if (scrollingRight && this.props.itemsCount > this.state.centeredItemIndex + 1) {
+	                nextItem++;
+	            } else if (!scrollingRight && nextItem > 0) {
+	                nextItem--;
+	            }
+	        }
+	        var absoluteProgress = Math.abs(this.getItemProgress(this.state.centeredItemIndex) - 0.5) * (containerWidth + itemWidth);
+	        return this.props.backgroundRenderer(this.state.centeredItemIndex, nextItem, absoluteProgress / itemWidth);
 	    }
 	});
 
@@ -378,7 +367,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var styleValue = 'translate3d(' + x.toString() + 'px,' + y + 'px,' + z + 'px)';
 	        currentStyle['Transform'] = styleValue;
 	        currentStyle['WebkitTransform'] = styleValue;
-	        currentStyle['MsTransform'] = styleValue;
+	        currentStyle['msTransform'] = styleValue;
 	        currentStyle['MozTransform'] = styleValue;
 	        return currentStyle;
 	    }
