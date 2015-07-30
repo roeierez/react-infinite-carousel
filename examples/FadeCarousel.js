@@ -37,8 +37,38 @@ var content = document.getElementById('content'),
         </div>;
     },
 
-    backgroundRenderer = function (index) {
-        return <img style={{filter: 'brightness(30%)', WebkitFilter: 'brightness(40%)', width: '100%', height: '100%'}} src={images[index % 3]} />;
+    getBackgroundImageStyle = function(additionalProperties){
+        var basicStyle = {
+            WebkitTransform: 'translate3d(0px,0px,0px)',
+            Transform: 'translate3d(0px,0px,0px)',
+            MsTransform: 'translate3d(0px,0px,0px)',
+            MozTransform: 'translate3d(0px,0px,0px)',
+            position: 'absolute',
+            top: '0px',
+            left: '0px',
+            width: '100%',
+            height: '100%'
+        };
+
+        Object.keys(additionalProperties || {}).forEach(function(key){
+            basicStyle[key] = additionalProperties[key];
+        });
+        return basicStyle;
+    },
+
+    backgroundRenderer = function(fromIndex, toIndex, progress){
+        var children = [
+                <img  key={"bgImage " + (toIndex % 3)} style={getBackgroundImageStyle()} src={images[toIndex % 3]} />
+            ],
+            fadeOutOpacity = progress < 0.5 ? 1 : (1-progress) * 2;
+
+        if (fromIndex != toIndex){
+            children.push(<img key={"bgImage " + (fromIndex % 3)} style={getBackgroundImageStyle({opacity: fadeOutOpacity})} src={images[fromIndex % 3]} />);
+        }
+
+        return <div style={{filter: 'brightness(30%)', WebkitFilter: 'brightness(40%)', width: '100%', height: '100%'}}>
+                    {children}
+                </div>
     }
 
 React.render(<Carousel
