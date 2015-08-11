@@ -230,7 +230,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1),
-	    SCROLLING_TIME_CONSTANT = 250;
+	    SCROLLING_TIME_CONSTANT =   250;
 
 	var HorizontalScroller = React.createClass ({displayName: "HorizontalScroller",
 
@@ -291,7 +291,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (this.amplitude) {
 	            elapsed = Date.now() - this.timestamp;
 	            delta = this.amplitude * Math.exp(-elapsed / SCROLLING_TIME_CONSTANT);
-	            if (delta > 10 || delta < -10) {
+	            if (delta > 3 || delta < -3) {
 	                this.scroll(this.target - delta);
 	                requestAnimationFrame(this.autoScroll);
 	            } else {
@@ -332,13 +332,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var snap = this.props.snap;
 	        this.pressed = false;
 	        clearInterval(this.ticker);
-	        if (this.velocity == 0) {
-	            if (this.offset % snap != 0) {
-	                this.target = (this.offset % snap) < snap / 2 ? Math.ceil(this.offset / snap) * snap - snap : Math.floor(this.offset / snap) * snap + snap;
-	            }
-	        } else {
-	            this.target = this.velocity < 0 ? Math.ceil(this.offset / snap) * snap - snap : Math.floor(this.offset / snap) * snap + snap;
+
+	        this.amplitude = this.velocity;
+	        if (this.amplitude > 0) {
+	            this.amplitude = snap;//Math.min(this.amplitude, snap);
+	        } else if (this.amplitude < 0){
+	            this.amplitude = -1 * snap;// Math.max(this.amplitude, -1 * snap);
 	        }
+
+	        this.target = this.offset + this.amplitude;
+	        this.target = Math.round(this.target / snap) * snap;
 
 	        if (typeof this.props.size == 'number') {
 	            this.target = Math.max(0, Math.min(this.props.size, Math.round(this.target / snap) * snap));
