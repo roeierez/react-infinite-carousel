@@ -100,10 +100,14 @@ var HorizontalScroller = React.createClass ({
     release: function(e) {
         var snap = this.props.snap;
         this.pressed = false;
-
         clearInterval(this.ticker);
-        this.amplitude = 1.2 * this.velocity;
-        this.target = this.velocity < 0 ? Math.ceil(this.offset / snap) * snap - snap :  Math.floor(this.offset / snap) * snap + snap;
+        if (this.velocity == 0) {
+            if (this.offset % snap != 0) {
+                this.target = (this.offset % snap) < snap / 2 ? Math.ceil(this.offset / snap) * snap - snap : Math.floor(this.offset / snap) * snap + snap;
+            }
+        } else {
+            this.target = this.velocity < 0 ? Math.ceil(this.offset / snap) * snap - snap : Math.floor(this.offset / snap) * snap + snap;
+        }
 
         if (typeof this.props.size == 'number') {
             this.target = Math.max(0, Math.min(this.props.size, Math.round(this.target / snap) * snap));

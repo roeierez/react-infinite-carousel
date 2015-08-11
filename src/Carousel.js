@@ -76,6 +76,7 @@ var carousel = React.createClass({
 
     renderItem: function(index){
         var containerWidth = this.getContainerWidth(),
+            scrollingRight = this.state.centerItemProgress > 0.5,
             itemWidth = this.getItemWidth(),
             itemProgress = this.getItemProgress(index),
             itemTranslate = itemProgress * (containerWidth + itemWidth) - itemWidth,
