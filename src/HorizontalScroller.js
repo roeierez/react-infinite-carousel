@@ -36,19 +36,6 @@ var HorizontalScroller = React.createClass ({
         return e.clientX;
     },
 
-    track: function() {
-        var now, elapsed, delta, v;
-
-        now = Date.now();
-        elapsed = now - this.timestamp;
-        this.timestamp = now;
-        delta = this.offset - this.frame;
-        this.frame = this.offset;
-
-        v = 1000 * delta / (1 + elapsed);
-        this.velocity = 0.8 * v + 0.2 * this.velocity;
-    },
-
     scroll: function(x){
         this.offset = x;
         this.props.onScroll(x);
@@ -76,8 +63,6 @@ var HorizontalScroller = React.createClass ({
         this.velocity = this.amplitude = 0;
         this.frame = this.offset;
         this.timestamp = Date.now();
-        clearInterval(this.ticker);
-        this.ticker = setInterval(this.track, 10);
 
         e.preventDefault();
         e.stopPropagation();
@@ -90,6 +75,7 @@ var HorizontalScroller = React.createClass ({
             delta = this.reference - x;
             if (delta > 2 || delta < -2) {
                 this.reference = x;
+                this.velocity = delta;
                 this.scroll(this.offset + delta);
             }
         }

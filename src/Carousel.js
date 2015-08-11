@@ -13,7 +13,7 @@ var carousel = React.createClass({
     },
 
     componentDidMount: function(){
-        this.parentElementWidth = React.findDOMNode(this).clientWidth;
+        this.parentElementWidth = React.findDOMNode(this).parentElement.clientWidth;
         window.addEventListener('resize', this.onResize);
         this.forceUpdate();
     },
@@ -23,7 +23,7 @@ var carousel = React.createClass({
     },
 
     onResize: function(){
-        this.parentElementWidth = React.findDOMNode(this).clientWidth;
+        this.parentElementWidth = React.findDOMNode(this).parentElement.clientWidth;
         this.forceUpdate();
     },
 
@@ -108,12 +108,16 @@ var carousel = React.createClass({
 
     render: function () {
         return (
-            <HorizontalScroller size={this.getScrollerSize()} snap={this.getItemWidth() + this.getItemsSpacing()} onScroll={this.onScroll}>
+
                 <div style={{width: this.getContainerWidth(), height: '100%', overflow: 'hidden', position: 'relative'}}>
                     {this.renderBackground()}
-                    {this.renderItems()}
+                    <HorizontalScroller size={this.getScrollerSize()} snap={this.getItemWidth() + this.getItemsSpacing()} onScroll={this.onScroll}>
+                        <div style={{position: 'absolute', height: '100%', width: '100%', top: 0, left: 0}}>
+                            {this.renderItems()}
+                        </div>
+                    </HorizontalScroller>
                 </div>
-            </HorizontalScroller>
+
         )
     },
 

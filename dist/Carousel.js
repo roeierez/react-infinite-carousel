@@ -69,7 +69,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    componentDidMount: function(){
-	        this.parentElementWidth = React.findDOMNode(this).clientWidth;
+	        this.parentElementWidth = React.findDOMNode(this).parentElement.clientWidth;
 	        window.addEventListener('resize', this.onResize);
 	        this.forceUpdate();
 	    },
@@ -79,7 +79,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    onResize: function(){
-	        this.parentElementWidth = React.findDOMNode(this).clientWidth;
+	        this.parentElementWidth = React.findDOMNode(this).parentElement.clientWidth;
 	        this.forceUpdate();
 	    },
 
@@ -164,12 +164,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    render: function () {
 	        return (
-	            React.createElement(HorizontalScroller, {size: this.getScrollerSize(), snap: this.getItemWidth() + this.getItemsSpacing(), onScroll: this.onScroll}, 
+
 	                React.createElement("div", {style: {width: this.getContainerWidth(), height: '100%', overflow: 'hidden', position: 'relative'}}, 
 	                    this.renderBackground(), 
-	                    this.renderItems()
+	                    React.createElement(HorizontalScroller, {size: this.getScrollerSize(), snap: this.getItemWidth() + this.getItemsSpacing(), onScroll: this.onScroll}, 
+	                        React.createElement("div", {style: {position: 'absolute', height: '100%', width: '100%', top: 0, left: 0}}, 
+	                            this.renderItems()
+	                        )
+	                    )
 	                )
-	            )
+
 	        )
 	    },
 
@@ -267,19 +271,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return e.clientX;
 	    },
 
-	    track: function() {
-	        var now, elapsed, delta, v;
-
-	        now = Date.now();
-	        elapsed = now - this.timestamp;
-	        this.timestamp = now;
-	        delta = this.offset - this.frame;
-	        this.frame = this.offset;
-
-	        v = 1000 * delta / (1 + elapsed);
-	        this.velocity = 0.8 * v + 0.2 * this.velocity;
-	    },
-
 	    scroll: function(x){
 	        this.offset = x;
 	        this.props.onScroll(x);
@@ -307,8 +298,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.velocity = this.amplitude = 0;
 	        this.frame = this.offset;
 	        this.timestamp = Date.now();
-	        clearInterval(this.ticker);
-	        this.ticker = setInterval(this.track, 10);
 
 	        e.preventDefault();
 	        e.stopPropagation();
@@ -321,6 +310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            delta = this.reference - x;
 	            if (delta > 2 || delta < -2) {
 	                this.reference = x;
+	                this.velocity = delta;
 	                this.scroll(this.offset + delta);
 	            }
 	        }
