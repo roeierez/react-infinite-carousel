@@ -330,8 +330,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.amplitude = this.velocity;
 	        this.target = this.offset;
 	        if (this.amplitude != 0) {
-	            this.amplitude = this.velocity > 0 ? snap : -1 * snap;
-	            this.target += this.amplitude;
+	            if (this.amplitude > 0) {
+	                this.target   = Math.ceil(this.offset / snap) * snap;
+	            } else {
+	                this.target   = Math.floor(this.offset / snap) * snap;
+	            }
 	        }
 
 	        this.target = Math.round(this.target / snap) * snap;
