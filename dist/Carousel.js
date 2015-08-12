@@ -304,13 +304,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    drag: function(e) {
-	        var x, delta;
+	        var x, delta, me = this;
 	        if (this.pressed) {
 	            x = this.xpos(e);
 	            delta = this.reference - x;
 	            if (delta > 2 || delta < -2) {
 	                this.reference = x;
 	                this.velocity = delta;
+	                clearTimeout(this.timeoutID);
+	                this.timeoutID = setTimeout(function(){
+	                    me.velocity = 0;
+	                },100);
 	                this.scroll(this.offset + delta);
 	            }
 	        }
@@ -324,13 +328,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        clearInterval(this.ticker);
 
 	        this.amplitude = this.velocity;
-	        if (this.amplitude > 0) {
-	            this.amplitude = snap;//Math.min(this.amplitude, snap);
-	        } else if (this.amplitude < 0){
-	            this.amplitude = -1 * snap;// Math.max(this.amplitude, -1 * snap);
+	        this.target = this.offset;
+	        if (this.amplitude != 0) {
+	            this.amplitude = this.velocity > 0 ? snap : -1 * snap;
+	            this.target += this.amplitude;
 	        }
 
-	        this.target = this.offset + this.amplitude;
 	        this.target = Math.round(this.target / snap) * snap;
 
 	        if (typeof this.props.size == 'number') {
