@@ -298,9 +298,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.velocity = this.amplitude = 0;
 	        this.frame = this.offset;
 	        this.timestamp = Date.now();
-
-	        e.preventDefault();
-	        e.stopPropagation();
 	    },
 
 	    drag: function(e) {
@@ -318,8 +315,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	                this.scroll(this.offset + delta);
 	            }
 	        }
-	        e.preventDefault();
-	        e.stopPropagation();
 	    },
 
 	    release: function(e) {
@@ -346,9 +341,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.amplitude = this.target - this.offset;
 	        this.timestamp = Date.now();
 	        requestAnimationFrame(this.autoScroll);
-
-	        e.preventDefault();
-	        e.stopPropagation();
 	    }
 	});
 
