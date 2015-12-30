@@ -7,7 +7,7 @@ var carousel = React.createClass({
 
     getInitialState: function () {
         return {
-            centeredItemIndex: 0,
+            centeredItemIndex: this.props.centeredItemIndex || 0,
             centerItemProgress: 0.5
         };
     },
@@ -111,7 +111,7 @@ var carousel = React.createClass({
 
                 <div style={{width: this.getContainerWidth(), height: '100%', overflow: 'hidden', position: 'relative'}}>
                     {this.renderBackground()}
-                    <HorizontalScroller size={this.getScrollerSize()} snap={this.getItemWidth() + this.getItemsSpacing()} onScroll={this.onScroll}>
+                    <HorizontalScroller centeredItemIndex={this.state.centeredItemIndex} size={this.getScrollerSize()} snap={this.getItemWidth() + this.getItemsSpacing()} onScroll={this.onScroll}>
                         <div style={{position: 'absolute', height: '100%', width: '100%', top: 0, left: 0}}>
                             {this.renderItems()}
                         </div>
@@ -161,7 +161,8 @@ carousel.propTypes = {
     width: React.PropTypes.number,
     spacing: React.PropTypes.number,
     numberOfRenderItemsPerSide: React.PropTypes.number,
-    itemsCount: React.PropTypes.number
+    itemsCount: React.PropTypes.number,
+    centeredItemIndex: React.PropTypes.number
 };
 
 module.exports = carousel;

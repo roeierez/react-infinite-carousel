@@ -2,7 +2,11 @@ var React = require('react'),
     SCROLLING_TIME_CONSTANT =   250;
 
 var HorizontalScroller = React.createClass ({
-
+    getInitialState: function() {
+        return {
+            offset: this.props.centeredItemIndex ? this.props.centeredItemIndex * this.props.snap : 0
+        };
+    },
     timestamp: 0,
     frame: 0,
     velocity:0,
@@ -10,7 +14,6 @@ var HorizontalScroller = React.createClass ({
     pressed: 0,
     ticker: 0,
     reference: 0,
-    offset: 0,
     target: 0,
 
     render: function() {
@@ -37,7 +40,7 @@ var HorizontalScroller = React.createClass ({
     },
 
     scroll: function(x){
-        this.offset = x;
+        this.state.offset = x;
         this.props.onScroll(x);
     },
 
@@ -61,7 +64,7 @@ var HorizontalScroller = React.createClass ({
         this.reference = this.xpos(e);
 
         this.velocity = this.amplitude = 0;
-        this.frame = this.offset;
+        this.frame = this.state.offset;
         this.timestamp = Date.now();
     },
 
@@ -77,7 +80,7 @@ var HorizontalScroller = React.createClass ({
                 this.timeoutID = setTimeout(function(){
                     me.velocity = 0;
                 },100);
-                this.scroll(this.offset + delta);
+                this.scroll(this.state.offset + delta);
             }
         }
     },
@@ -88,12 +91,12 @@ var HorizontalScroller = React.createClass ({
         clearInterval(this.ticker);
 
         this.amplitude = this.velocity;
-        this.target = this.offset;
+        this.target = this.state.offset;
         if (this.amplitude != 0) {
             if (this.amplitude > 0) {
-                this.target   = Math.ceil(this.offset / snap) * snap;
+                this.target   = Math.ceil(this.state.offset / snap) * snap;
             } else {
-                this.target   = Math.floor(this.offset / snap) * snap;
+                this.target   = Math.floor(this.state.offset / snap) * snap;
             }
         }
 
@@ -103,7 +106,7 @@ var HorizontalScroller = React.createClass ({
             this.target = Math.max(0, Math.min(this.props.size, Math.round(this.target / snap) * snap));
         }
 
-        this.amplitude = this.target - this.offset;
+        this.amplitude = this.target - this.state.offset;
         this.timestamp = Date.now();
         requestAnimationFrame(this.autoScroll);
     }
