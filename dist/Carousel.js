@@ -63,8 +63,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    getInitialState: function () {
 	        return {
-	            centeredItemIndex: 0,
-	            centerItemProgress: 0.5
+	           centeredItemIndex: this.props.centeredItemIndex || 0,
+						centerItemProgress: 0.5
 	        };
 	    },
 
@@ -167,7 +167,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                React.createElement("div", {style: {width: this.getContainerWidth(), height: '100%', overflow: 'hidden', position: 'relative'}}, 
 	                    this.renderBackground(), 
-	                    React.createElement(HorizontalScroller, {size: this.getScrollerSize(), snap: this.getItemWidth() + this.getItemsSpacing(), onScroll: this.onScroll}, 
+	                    React.createElement(HorizontalScroller, {centeredItemIndex: this.state.centeredItemIndex, size: this.getScrollerSize(), snap: this.getItemWidth() + this.getItemsSpacing(), onScroll: this.onScroll}, 
 	                        React.createElement("div", {style: {position: 'absolute', height: '100%', width: '100%', top: 0, left: 0}}, 
 	                            this.renderItems()
 	                        )
@@ -217,7 +217,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    width: React.PropTypes.number,
 	    spacing: React.PropTypes.number,
 	    numberOfRenderItemsPerSide: React.PropTypes.number,
-	    itemsCount: React.PropTypes.number
+	    itemsCount: React.PropTypes.number,
+			centeredItemIndex: React.PropTypes.number
 	};
 
 	module.exports = carousel;
@@ -237,7 +238,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    SCROLLING_TIME_CONSTANT =   250;
 
 	var HorizontalScroller = React.createClass ({displayName: "HorizontalScroller",
-
+			getInitialState: function() {
+				return {
+					offset: this.props.centeredItemIndex ? this.props.centeredItemIndex * this.props.snap : 0
+				};
+			},
 	    timestamp: 0,
 	    frame: 0,
 	    velocity:0,
@@ -245,7 +250,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    pressed: 0,
 	    ticker: 0,
 	    reference: 0,
-	    offset: 0,
 	    target: 0,
 
 	    render: function() {
@@ -272,7 +276,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    scroll: function(x){
-	        this.offset = x;
+	        this.state.offset = x;
 	        this.props.onScroll(x);
 	    },
 
@@ -296,7 +300,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.reference = this.xpos(e);
 
 	        this.velocity = this.amplitude = 0;
-	        this.frame = this.offset;
+	        this.frame = this.state.offset;
 	        this.timestamp = Date.now();
 	    },
 
@@ -312,7 +316,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                this.timeoutID = setTimeout(function(){
 	                    me.velocity = 0;
 	                },100);
-	                this.scroll(this.offset + delta);
+	                this.scroll(this.state.offset + delta);
 	            }
 	        }
 	    },
@@ -323,12 +327,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        clearInterval(this.ticker);
 
 	        this.amplitude = this.velocity;
-	        this.target = this.offset;
+	        this.target = this.state.offset;
 	        if (this.amplitude != 0) {
 	            if (this.amplitude > 0) {
-	                this.target   = Math.ceil(this.offset / snap) * snap;
+	                this.target   = Math.ceil(this.state.offset / snap) * snap;
 	            } else {
-	                this.target   = Math.floor(this.offset / snap) * snap;
+	                this.target   = Math.floor(this.state.offset / snap) * snap;
 	            }
 	        }
 
@@ -338,7 +342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.target = Math.max(0, Math.min(this.props.size, Math.round(this.target / snap) * snap));
 	        }
 
-	        this.amplitude = this.target - this.offset;
+	        this.amplitude = this.target - this.state.offset;
 	        this.timestamp = Date.now();
 	        requestAnimationFrame(this.autoScroll);
 	    }
