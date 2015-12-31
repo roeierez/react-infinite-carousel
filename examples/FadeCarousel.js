@@ -42,6 +42,7 @@ var content = document.getElementById('content'),
     }
 
 React.render(<Carousel
+    initialItemIndex={3}
     backgroundRenderer={backgroundRenderer}
     itemRenderer={itemRenderer}
     itemsCount={10}

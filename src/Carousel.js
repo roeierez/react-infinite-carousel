@@ -15,6 +15,7 @@ var carousel = React.createClass({
     componentDidMount: function(){
         this.parentElementWidth = React.findDOMNode(this).parentElement.clientWidth;
         window.addEventListener('resize', this.onResize);
+        this.refs.scroller.scroll( (this.getItemWidth() + this.getItemsSpacing()) * (this.props.initialItemIndex || 0) );
         this.forceUpdate();
     },
 
@@ -111,7 +112,7 @@ var carousel = React.createClass({
 
                 <div style={{width: this.getContainerWidth(), height: '100%', overflow: 'hidden', position: 'relative'}}>
                     {this.renderBackground()}
-                    <HorizontalScroller size={this.getScrollerSize()} snap={this.getItemWidth() + this.getItemsSpacing()} onScroll={this.onScroll}>
+                    <HorizontalScroller ref="scroller" size={this.getScrollerSize()} snap={this.getItemWidth() + this.getItemsSpacing()} onScroll={this.onScroll}>
                         <div style={{position: 'absolute', height: '100%', width: '100%', top: 0, left: 0}}>
                             {this.renderItems()}
                         </div>
@@ -161,7 +162,8 @@ carousel.propTypes = {
     width: React.PropTypes.number,
     spacing: React.PropTypes.number,
     numberOfRenderItemsPerSide: React.PropTypes.number,
-    itemsCount: React.PropTypes.number
+    itemsCount: React.PropTypes.number,
+    initialItemIndex: React.PropTypes.number
 };
 
 module.exports = carousel;
