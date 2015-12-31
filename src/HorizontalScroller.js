@@ -63,6 +63,9 @@ var HorizontalScroller = React.createClass ({
         this.velocity = this.amplitude = 0;
         this.frame = this.offset;
         this.timestamp = Date.now();
+
+        e.preventDefault();
+        e.stopPropagation();
     },
 
     drag: function(e) {
@@ -80,6 +83,8 @@ var HorizontalScroller = React.createClass ({
                 this.scroll(this.offset + delta);
             }
         }
+        e.preventDefault();
+        e.stopPropagation();
     },
 
     release: function(e) {
@@ -106,6 +111,9 @@ var HorizontalScroller = React.createClass ({
         this.amplitude = this.target - this.offset;
         this.timestamp = Date.now();
         requestAnimationFrame(this.autoScroll);
+
+        e.preventDefault();
+        e.stopPropagation();
     }
 });
 
