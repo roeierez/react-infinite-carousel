@@ -281,7 +281,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    autoScroll: function() {
 	        var elapsed, delta;
 
-	        if (this.amplitude) {
+	        if (this.amplitude && this.isMounted()) {
 	            elapsed = Date.now() - this.timestamp;
 	            delta = this.amplitude * Math.exp(-elapsed / SCROLLING_TIME_CONSTANT);
 	            if (delta > 3 || delta < -3) {
