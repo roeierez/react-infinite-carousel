@@ -15,8 +15,14 @@ var carousel = React.createClass({
     componentDidMount: function(){
         this.parentElementWidth = React.findDOMNode(this).parentElement.clientWidth;
         window.addEventListener('resize', this.onResize);
-        this.refs.scroller.scroll( (this.getItemWidth() + this.getItemsSpacing()) * (this.props.initialItemIndex || 0) );
+        this.refs.scroller.scroll( (this.getItemWidth() + this.getItemsSpacing()) * (this.props.initialItemIndex || this.props.controlledItemIndex || 0) );
         this.forceUpdate();
+    },
+
+    componentWillReceiveProps: function(newProps, newState) {
+        if (newProps.controlledItemIndex && newProps.controlledItemIndex !== this.props.controlledItemIndex) {
+            this.refs.scroller.scroll( (this.getItemWidth() + this.getItemsSpacing()) * (newProps.controlledItemIndex || 0) );
+        }
     },
 
     componentWillUnmount: function(){
@@ -163,7 +169,8 @@ carousel.propTypes = {
     spacing: React.PropTypes.number,
     numberOfRenderItemsPerSide: React.PropTypes.number,
     itemsCount: React.PropTypes.number,
-    initialItemIndex: React.PropTypes.number
+    initialItemIndex: React.PropTypes.number,
+    controlledItemIndex: React.PropTypes.number
 };
 
 module.exports = carousel;
