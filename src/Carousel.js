@@ -1,4 +1,5 @@
 var React = require('react'),
+    ReactDOM = require('react-dom'),
     HorizontalScroller = require('./HorizontalScroller.js'),
     StyleHelper = require('./StyleHelper.js'),
     DEFAULT_ITEMS_TO_RENDER_COUNT = 2;
@@ -13,7 +14,7 @@ var carousel = React.createClass({
     },
 
     componentDidMount: function(){
-        this.parentElementWidth = React.findDOMNode(this).parentElement.clientWidth;
+        this.parentElementWidth = ReactDOM.findDOMNode(this).parentElement.clientWidth;
         window.addEventListener('resize', this.onResize);
         this.refs.scroller.scroll( (this.getItemWidth() + this.getItemsSpacing()) * (this.props.initialItemIndex || 0) );
         this.forceUpdate();
@@ -24,7 +25,7 @@ var carousel = React.createClass({
     },
 
     onResize: function(){
-        this.parentElementWidth = React.findDOMNode(this).parentElement.clientWidth;
+        this.parentElementWidth = ReactDOM.findDOMNode(this).parentElement.clientWidth;
         this.forceUpdate();
     },
 

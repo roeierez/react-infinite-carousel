@@ -17,7 +17,8 @@
     "infinite"
   ],
   "peerDependencies": {
-    "react": ">=0.13.0 <0.15.0"
+      "react": "^0.14.5",
+      "react-dom": "^0.14.5"
   },
   "author": "Roei Erez <roeierez@gmail.com>",
   "license": "MIT",
@@ -26,7 +27,8 @@
   },
   "homepage": "http://roeierez.github.io/react-infinite-carousel/",
   "devDependencies": {
-    "react": "^0.13.3",
+    "react": "^0.14.5",
+    "react-dom": "^0.14.5",
     "jsx-loader": "^0.13.2",
     "webpack": "~1.4.3"
   },
