@@ -309,7 +309,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.timestamp = Date.now();
 
 	        e.preventDefault();
-	        e.stopPropagation();
 	    },
 
 	    drag: function(e) {
@@ -328,7 +327,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	        e.preventDefault();
-	        e.stopPropagation();
 	    },
 
 	    release: function(e) {
@@ -356,8 +354,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.timestamp = Date.now();
 	        requestAnimationFrame(this.autoScroll);
 
-	        e.preventDefault();
-	        e.stopPropagation();
+	        e.preventDefault();        
 	    }
 	});
 
