@@ -65,7 +65,6 @@ var HorizontalScroller = React.createClass ({
         this.timestamp = Date.now();
 
         e.preventDefault();
-        e.stopPropagation();
     },
 
     drag: function(e) {
@@ -84,7 +83,6 @@ var HorizontalScroller = React.createClass ({
             }
         }
         e.preventDefault();
-        e.stopPropagation();
     },
 
     release: function(e) {
@@ -112,8 +110,7 @@ var HorizontalScroller = React.createClass ({
         this.timestamp = Date.now();
         requestAnimationFrame(this.autoScroll);
 
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault();        
     }
 });
 
