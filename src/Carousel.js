@@ -20,8 +20,8 @@ var carousel = React.createClass({
     },
 
     componentWillReceiveProps: function(newProps, newState) {
-        if (newProps.controlledItemIndex && newProps.controlledItemIndex !== this.props.controlledItemIndex) {
-            this.refs.scroller.scroll( (this.getItemWidth() + this.getItemsSpacing()) * (newProps.controlledItemIndex || 0) );
+        if (newProps.initialItemIndex && newProps.initialItemIndex !== this.props.initialItemIndex) {
+            this.refs.scroller.scroll( (this.getItemWidth() + this.getItemsSpacing()) * (newProps.initialItemIndex || 0) );
         }
     },
 
