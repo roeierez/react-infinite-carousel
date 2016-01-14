@@ -13,6 +13,10 @@ var HorizontalScroller = React.createClass ({
     offset: 0,
     target: 0,
 
+    componentWillUnmount: function() {
+        this.amplitude = 0;
+    },
+
     render: function() {
         //return React.Children.only(this.props.children);
         return <div
@@ -44,7 +48,7 @@ var HorizontalScroller = React.createClass ({
     autoScroll: function() {
         var elapsed, delta;
 
-        if (this.amplitude && this.isMounted()) {
+        if (this.amplitude) {
             elapsed = Date.now() - this.timestamp;
             delta = this.amplitude * Math.exp(-elapsed / SCROLLING_TIME_CONSTANT);
             if (delta > 3 || delta < -3) {
