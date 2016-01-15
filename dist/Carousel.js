@@ -257,6 +257,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    offset: 0,
 	    target: 0,
 
+	    componentWillUnmount: function() {
+	        this.amplitude = 0;
+	    },
+
 	    render: function() {
 	        //return React.Children.only(this.props.children);
 	        return React.createElement("div", {

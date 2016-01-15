@@ -13,6 +13,10 @@ var HorizontalScroller = React.createClass ({
     offset: 0,
     target: 0,
 
+    componentWillUnmount: function() {
+        this.amplitude = 0;
+    },
+
     render: function() {
         //return React.Children.only(this.props.children);
         return <div
